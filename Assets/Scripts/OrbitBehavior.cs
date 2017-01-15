@@ -11,8 +11,6 @@ public class OrbitBehavior : MonoBehaviour
     public float initialTheta = 0.0f;
     public bool randomizeInitialTheta = true;
 
-    //public Material orbitLineMaterial;
-
     public float aphelion;
     public float perihelion;
 
@@ -86,7 +84,7 @@ public class OrbitBehavior : MonoBehaviour
         body.position.y = 0.0;
         body.position.z = radius * Mathf.Sin( theta );
 
-        body.transform.localPosition = new Vector3( (float)body.position.x, (float)body.position.y, (float)body.position.z );
+        body.transform.position = new Vector3( (float)body.position.x, (float)body.position.y, (float)body.position.z );
     }
 
     void EllipticalOrbitUpdate()

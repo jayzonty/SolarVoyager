@@ -5,8 +5,6 @@ using System.Collections.Generic;
 
 public class SolarSystemBehavior : MonoBehaviour
 {
-    public Material orbitLineMaterial; // TODO: Move this somewhere else
-
 	// For now, solve the two body problem
 	public BodyBehavior sun;
 	

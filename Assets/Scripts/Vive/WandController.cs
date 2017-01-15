@@ -47,7 +47,8 @@ public class WandController : SteamVR_TrackedController
         return Controller.GetAxis( Valve.VR.EVRButtonId.k_EButton_SteamVR_Touchpad );
     }
 
-	protected override void Start()
+	// TODO: Uncomment?
+	/*protected override void Start()
 	{
         base.Start();
 	}
@@ -55,5 +56,5 @@ public class WandController : SteamVR_TrackedController
 	protected override void Update()
 	{
         base.Update();
-	}
+	}*/
 }
