@@ -49,7 +49,7 @@ public class NetManager : MonoBehaviour
 	private IEnumerator SendAudioQuery( AudioClip clip )
 	{
 		string tempFile = Application.temporaryCachePath + "/temp_speech.wav";
-		AudioUtil.Save( tempFile, clip );
+		AudioUtil.SaveAudioClipToFile( clip, tempFile );
 		
 		WWW localFile = new WWW( "file://" + tempFile );
 		yield return localFile;
@@ -97,8 +97,6 @@ public class NetManager : MonoBehaviour
 	
 	private IEnumerator SendForm( string url, WWWForm form )
 	{
-		Debug.Log( "Sending form..." );
-		
 		WWW conn = new WWW( url, form );
 		
 		yield return conn;
