@@ -1,29 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class SpeechManager : MonoBehaviour
 {
     public int maxRecordingLength = 60;
+	public bool loopRecording = false;
 
-    private AudioClip recordingClip = null;
-
-    private int minFrequency;
+	private int minFrequency;
     private int maxFrequency;
+	
+    private AudioClip recordingClip = null;
+	
+	private string deviceName = null;
 
     public void StartRecording()
     {
-        recordingClip = Microphone.Start( null, false, maxRecordingLength, maxFrequency );
-
+        recordingClip = Microphone.Start( deviceName, loopRecording, maxRecordingLength, maxFrequency );
         if( recordingClip == null )
         {
-            Debug.Log( "AAAAAHHHH Something is wrong with the recording clip!" );
+            Debug.LogError( "Recording clip is null!" );
         }
     }
 
     public void StopRecording()
     {
-        Microphone.End( null );
+        Microphone.End( deviceName );
     }
 
     public AudioClip GetRecentClip()
@@ -39,13 +42,12 @@ public class SpeechManager : MonoBehaviour
             audioSource.clip = recordingClip;
             audioSource.Play();
         }
-
     }
 
     // Use this for initialization
     void Start()
     {
-        Microphone.GetDeviceCaps( null, out minFrequency, out maxFrequency );
+        Microphone.GetDeviceCaps( deviceName, out minFrequency, out maxFrequency );
     }
 
     // Update is called once per frame

@@ -57,6 +57,7 @@ public class OrbitBehavior : MonoBehaviour
 
         LineRenderer lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.numPositions = NUM_POINTS + 1;
+		lineRenderer.startWidth = lineRenderer.endWidth = 2.0f;
         //lineRenderer.material = orbitLineMaterial;
         lineRenderer.useWorldSpace = false;
 
@@ -67,6 +68,7 @@ public class OrbitBehavior : MonoBehaviour
             pos.x = radius * Mathf.Cos( thetaStep * i );
             pos.y = 0.0f;
             pos.z = radius * Mathf.Sin( thetaStep * i );
+			
             lineRenderer.SetPosition( i, pos );
         }
     }
@@ -79,12 +81,12 @@ public class OrbitBehavior : MonoBehaviour
         float velocity = 2 * Mathf.PI / period;
 
         theta += velocity * Time.deltaTime;
+		
+        float bx = radius * Mathf.Cos( theta );
+        float by = 0.0f;
+        float bz = radius * Mathf.Sin( theta );
 
-        body.position.x = radius * Mathf.Cos( theta );
-        body.position.y = 0.0;
-        body.position.z = radius * Mathf.Sin( theta );
-
-        body.transform.position = new Vector3( (float)body.position.x, (float)body.position.y, (float)body.position.z );
+        body.transform.localPosition = new Vector3( bx, by, bz );
     }
 
     void EllipticalOrbitUpdate()

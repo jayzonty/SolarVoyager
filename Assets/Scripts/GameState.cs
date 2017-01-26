@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameState : MonoBehaviour
+public class GameState
 {
     public enum NavigationMode
     {
@@ -9,12 +9,4 @@ public class GameState : MonoBehaviour
     }
     
     public static NavigationMode navigationMode = NavigationMode.Free;
-    
-	void Start()
-	{
-	}
-	
-	void Update()
-	{
-	}
 }

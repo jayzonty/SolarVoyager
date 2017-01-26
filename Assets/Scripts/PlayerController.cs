@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 50.0f;
     public float followSpeed = 50.0f;
 
-    public Transform debugTargetFollow;
     private Transform followTarget;
 
     private AudioSource audioSource;
@@ -26,7 +25,19 @@ public class PlayerController : MonoBehaviour
 
     public void DebugFollow()
     {
-        Follow( debugTargetFollow );
+		int index = UIManager.Instance.planetsDropdown.value;
+		string planet = UIManager.Instance.planetsDropdown.options[index].text;
+		
+		GameObject[] planets = GameObject.FindGameObjectsWithTag( "Planet" );
+		foreach( GameObject go in planets )
+		{
+			if( go.name.Equals( planet ) )
+			{
+				Follow( go.GetComponentInChildren<BodyBehavior>().gameObject.transform );
+				break;
+			}
+		}
+        //Follow( debugTargetFollow );
     }
 
     public void Follow( Transform target )
@@ -34,6 +45,30 @@ public class PlayerController : MonoBehaviour
         followTarget = target;
         GameState.navigationMode = GameState.NavigationMode.Follow;
     }
+	
+	public void DebugWarp()
+	{
+		int index = UIManager.Instance.planetsDropdown.value;
+		string planet = UIManager.Instance.planetsDropdown.options[index].text;
+		
+		GameObject[] planets = GameObject.FindGameObjectsWithTag( "Planet" );
+		foreach( GameObject go in planets )
+		{
+			if( go.name.Equals( planet ) )
+			{
+				WarpToPlanet( go.GetComponentInChildren<BodyBehavior>().gameObject.transform );
+				break;
+			}
+		}
+	}
+	
+	public void WarpToPlanet( Transform target )
+	{
+		Vector3 targetPos = target.position + ( target.transform.up - target.transform.forward ) * 20.0f;
+		transform.position = targetPos;
+
+		Follow( target );
+	}
     
     public Vector3 GetEulerAngles()
     {
