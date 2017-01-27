@@ -9,4 +9,9 @@ public class AudioUtil
 	{
 		SavWav.Save( fileName, clip );
 	}
+	
+	public static Byte[] GetBytes( AudioClip clip )
+	{
+		return SavWav.GetBytes( clip );
+	}
 }

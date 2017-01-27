@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class NetManager : MonoBehaviour
 {
@@ -36,7 +38,8 @@ public class NetManager : MonoBehaviour
 	
 	public void DebugSendQuery()
 	{
-		AudioClip clip = Resources.Load( "Sounds/test_speech" ) as AudioClip;
+		AudioClip clip = GameObject.FindObjectOfType<SpeechManager>().GetRecentClip();
+		Debug.Log( clip.length );
 		
 		SendSpeechQuery( clip );
 	}
@@ -48,6 +51,27 @@ public class NetManager : MonoBehaviour
 	
 	private IEnumerator SendAudioQuery( AudioClip clip )
 	{
+		/*Byte[] clipBytes = AudioUtil.GetBytes( clip );
+		
+		List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
+		formData.Add( new MultipartFormDataSection( "query", "none" ) );
+		formData.Add( new MultipartFormFileSection( "query.wav", clipBytes ) );
+		
+		UnityWebRequest request = UnityWebRequest.Post( Constants.SPEECH_QUERY_URL, formData );
+		
+		request.downloadHandler = new DownloadHandlerBuffer();
+		
+		yield return request.Send();
+		
+		if( request.isError )
+		{
+			Debug.LogError( request.error );
+		}
+		else
+		{
+			Debug.Log( request.downloadHandler.text );
+		}*/
+		
 		string tempFile = Application.temporaryCachePath + "/temp_speech.wav";
 		AudioUtil.SaveAudioClipToFile( clip, tempFile );
 		
@@ -108,9 +132,27 @@ public class NetManager : MonoBehaviour
 		else
 		{
 			Debug.Log( "Response: " + conn.text );
+			
+			response = conn.text;
+			error = conn.error;
+			
+			QueryResponse q = JsonUtility.FromJson<QueryResponse>( response );
+			if( q.response == null )
+			{
+				Debug.Log( "WTF" );
+			}
+			
+			TextToSpeech t = GameObject.FindObjectOfType<TextToSpeech>();
+			if( t != null )
+			{
+				t.Synthesize( q.response );
+			}
+			else
+			{
+				Debug.Log( "RAWR" );
+			}
 		}
 		
-		response = conn.text;
-		error = conn.error;
+		
 	}
 }

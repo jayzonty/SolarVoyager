@@ -106,7 +106,15 @@ public static class SavWav {
 	}
 
 	static void ConvertAndWrite(FileStream fileStream, AudioClip clip) {
+		Byte[] bytesData = GetBytes( clip );
 
+		fileStream.Write(bytesData, 0, bytesData.Length);
+	}
+	
+	// Created a separate method for converting AudioClip to byte array
+	// for convenience purposes.
+	public static Byte[] GetBytes( AudioClip clip )
+	{
 		var samples = new float[clip.samples];
 
 		clip.GetData(samples, 0);
@@ -126,9 +134,10 @@ public static class SavWav {
 			byteArr = BitConverter.GetBytes(intData[i]);
 			byteArr.CopyTo(bytesData, i * 2);
 		}
-
-		fileStream.Write(bytesData, 0, bytesData.Length);
+		
+		return bytesData;
 	}
+	
 
 	static void WriteHeader(FileStream fileStream, AudioClip clip) {
 
