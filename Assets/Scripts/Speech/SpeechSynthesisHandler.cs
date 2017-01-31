@@ -7,22 +7,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class TextToSpeech : MonoBehaviour
+public delegate void OnSpeechSynthesisFinished( AudioClip clip );
+
+public class SpeechSynthesisHandler
 {
-	private AudioClip recentClip = null;
-	
-	public AudioClip RecentClip
-	{
-		get
-		{
-			return recentClip;
-		}
-	}
-	
-	public enum VoiceType
-	{
-		Male, Female
-	}
+	public event OnSpeechSynthesisFinished SpeechSynthesisFinished;
 	
 	private static readonly string AUTH_TOKEN_URL = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
 	private static readonly string SERVICE_URL = "https://speech.platform.bing.com/synthesize";
@@ -42,40 +31,68 @@ public class TextToSpeech : MonoBehaviour
 	public static readonly string AUTH_TOKEN_PARAM_KEY = "AuthorizationToken";
 	public static readonly string TEXT_PARAM_KEY = "Text";
 	
+	public static readonly string SERVICE_NAME_TEMPLATE = "Microsoft Server Speech Text to Speech Voice ({0})";
+	
 	public string bingSpeechApiKey = "e54ef2dca66a41f88c92d8cd4b592c13";
 	
 	public static readonly string SSML_TEMPLATE = "<speak version='1.0' xml:lang='en-us'><voice xml:lang='{0}' xml:gender='{1}' name='{2}'>{3}</voice></speak>";
 	
-	public string locale = "en-US";
-	public VoiceType voiceType = VoiceType.Female;
-	public string voiceName = "Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)";
+	private SpeechSynthesisOptions synthesisOptions;
 	
 	private string accessToken;
 	
-	private string testText = "Hello! My name is Cortana.";
-	
-	public void DebugTextToSpeech()
+	public SpeechSynthesisHandler( SpeechSynthesisOptions options )
 	{
-		//StartCoroutine( RetrieveAuthToken() );
-		StartCoroutine( SynthesizeText( testText ) );
+		synthesisOptions = options;
 	}
 	
-	public void Synthesize( string text )
+	public IEnumerator Synthesize( string text )
 	{
-		StartCoroutine( SynthesizeText( text ) );
+		yield return RetrieveAuthToken();
+		
+		Debug.Log( "Connecting to speech service..." );
+		
+		//UnityWebRequest request = new UnityWebRequest( SERVICE_URL );
+		UnityWebRequest request = UnityWebRequest.GetAudioClip( SERVICE_URL, AudioType.WAV );
+		request.method = UnityWebRequest.kHttpVerbPOST;
+		
+		string voiceName = GetServiceName();
+		
+		string content = string.Format( SSML_TEMPLATE, synthesisOptions.locale, synthesisOptions.voiceType.ToString(), voiceName, text );
+		
+		UploadHandler uploadHandler = new UploadHandlerRaw( Encoding.ASCII.GetBytes( content ) );
+		uploadHandler.contentType = "application/ssml+xml";
+		request.uploadHandler = uploadHandler;
+		
+		request.SetRequestHeader( OUTPUT_FORMAT_HEADER_KEY, "riff-16khz-16bit-mono-pcm" );
+		request.SetRequestHeader( APP_ID_HEADER_KEY, "0A00E2D44CD541999CF622B7C8B1D036" );
+		request.SetRequestHeader( CLIENT_ID_HEADER_KEY, SystemInfo.deviceUniqueIdentifier );
+		request.SetRequestHeader( "Authorization", "Bearer " + accessToken );
+		//request.SetRequestHeader( USER_AGENT_HEADER_KEY, "SolarVoyager" );
+		
+		yield return request.Send();
+		
+		AudioClip speechClip = null;
+		
+		if( request.isError )
+		{
+			Debug.LogError( request.error );
+		}
+		else
+		{
+			Debug.Log( "Response code: " + request.responseCode );
+			Debug.Log( "Content-Type: " + request.GetResponseHeader( "Content-Type" ) );
+			
+			speechClip = DownloadHandlerAudioClip.GetContent( request );
+		}
+		
+		if( SpeechSynthesisFinished != null )
+		{
+			SpeechSynthesisFinished( speechClip );
+		}
 	}
 	
-	// Use this for initialization
-	void Start()
-	{
-	}
-	
-	// Update is called once per frame
-	void Update()
-	{	
-	}
-	
-	IEnumerator RetrieveAuthToken()
+	private IEnumerator RetrieveAuthToken()
 	{
 		UnityWebRequest request = new UnityWebRequest( AUTH_TOKEN_URL );
 		request.method = UnityWebRequest.kHttpVerbPOST;
@@ -96,46 +113,38 @@ public class TextToSpeech : MonoBehaviour
 		}
 	}
 	
-	IEnumerator SynthesizeText( string text )
+	private string GetServiceName()
 	{
-		yield return RetrieveAuthToken();
+		// TODO: Make this more elegant, like a JSON file for the different
+		// service names.
+		string param = synthesisOptions.locale;
 		
-		Debug.Log( "Connecting to speech service..." );
-		
-		//UnityWebRequest request = new UnityWebRequest( SERVICE_URL );
-		UnityWebRequest request = UnityWebRequest.GetAudioClip( SERVICE_URL, AudioType.WAV );
-		request.method = UnityWebRequest.kHttpVerbPOST;
-		
-		string content = string.Format( SSML_TEMPLATE, locale, voiceType.ToString(), voiceName, text );
-		
-		UploadHandler uploadHandler = new UploadHandlerRaw( Encoding.ASCII.GetBytes( content ) );
-		uploadHandler.contentType = "application/ssml+xml";
-		request.uploadHandler = uploadHandler;
-		
-		//request.downloadHandler = new DownloadHandlerBuffer();
-		
-		request.SetRequestHeader( OUTPUT_FORMAT_HEADER_KEY, "riff-16khz-16bit-mono-pcm" );
-		request.SetRequestHeader( APP_ID_HEADER_KEY, "0A00E2D44CD541999CF622B7C8B1D036" );
-		request.SetRequestHeader( CLIENT_ID_HEADER_KEY, SystemInfo.deviceUniqueIdentifier );
-		request.SetRequestHeader( "Authorization", "Bearer " + accessToken );
-		//request.SetRequestHeader( USER_AGENT_HEADER_KEY, "SolarVoyager" );
-		
-		yield return request.Send();
-		
-		if( request.isError )
+		if( synthesisOptions.locale.Equals( "en-US" ) )
 		{
-			Debug.LogError( request.error );
+			param += ", ";
+			if( synthesisOptions.voiceType == SpeechSynthesisOptions.VoiceType.Male )
+			{
+				param += "BenjaminRUS";
+			}
+			else
+			{
+				param += "ZiraRUS";
+			}
 		}
-		else
+		else if( synthesisOptions.locale.Equals( "ja-JP" ) )
 		{
-			Debug.Log( "Response code: " + request.responseCode );
-			Debug.Log( "Content-Type: " + request.GetResponseHeader( "Content-Type" ) );
-			
-			recentClip = DownloadHandlerAudioClip.GetContent( request );
-			
-			AudioSource audioSource = GameObject.FindObjectOfType<AudioSource>();
-            audioSource.clip = recentClip;
-            audioSource.Play();
+			param += ", ";
+			if( synthesisOptions.voiceType == SpeechSynthesisOptions.VoiceType.Male )
+			{
+				param += "Ichiro, Apollo";
+			}
+			else
+			{
+				param += "Ayumi, Apollo";
+			}
 		}
+		
+		string serviceName = string.Format( SERVICE_NAME_TEMPLATE, param );
+		return serviceName;
 	}
 }

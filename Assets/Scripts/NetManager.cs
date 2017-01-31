@@ -38,8 +38,8 @@ public class NetManager : MonoBehaviour
 	
 	public void DebugSendQuery()
 	{
-		AudioClip clip = GameObject.FindObjectOfType<SpeechManager>().GetRecentClip();
-		Debug.Log( clip.length );
+		//AudioClip clip = SpeechRecording.GetMostRecentClip();
+		AudioClip clip = Resources.Load( "Sounds/how-big-is-planet-mars" ) as AudioClip;
 		
 		SendSpeechQuery( clip );
 	}
@@ -142,7 +142,7 @@ public class NetManager : MonoBehaviour
 				Debug.Log( "WTF" );
 			}
 			
-			TextToSpeech t = GameObject.FindObjectOfType<TextToSpeech>();
+			/*TextToSpeech t = GameObject.FindObjectOfType<TextToSpeech>();
 			if( t != null )
 			{
 				t.Synthesize( q.response );
@@ -150,7 +150,7 @@ public class NetManager : MonoBehaviour
 			else
 			{
 				Debug.Log( "RAWR" );
-			}
+			}*/
 		}
 		
 		

@@ -11,4 +11,6 @@ public class Constants
 	
 	public static readonly string WAV_FILE_KEY = "wavfile";
 	public static readonly string QUERY_KEY = "query";
+	
+	public static readonly int RECORDING_FREQ = 16000;
 }

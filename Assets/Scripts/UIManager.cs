@@ -18,6 +18,23 @@ public class UIManager : MonoBehaviour
 		}
 	}
 	
+	public void DebugQueryButtonPressed()
+	{
+		
+	}
+	
+	public void OnQueryButtonPressed()
+	{
+		if( GameState.CurrentQueryState == GameState.QueryState.Idle )
+		{
+			GameController.Instance.StartQuery();
+		}
+		else if( GameState.CurrentQueryState == GameState.QueryState.Recording )
+		{
+			GameController.Instance.FinalizeQuery();
+		}
+	}
+	
 	void Awake()
 	{
 		instance = this;
