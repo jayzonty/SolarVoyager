@@ -6,7 +6,11 @@ public class PlayerController : MonoBehaviour
 
     private Camera playerCamera = null;
     
+	public float baseMovementSpeed = 50.0f;
+	
     public float movementSpeed = 50.0f;
+	public float movementAcceleration = 2.0f;
+	
     public float followSpeed = 50.0f;
 
     private Transform followTarget;
@@ -64,10 +68,14 @@ public class PlayerController : MonoBehaviour
 	
 	public void WarpToPlanet( Transform target )
 	{
-		Vector3 targetPos = target.position + ( target.transform.up - target.transform.forward ) * 20.0f;
-		transform.position = targetPos;
+		BodyBehavior body = target.gameObject.GetComponentInChildren<BodyBehavior>();
+		if( body != null )
+		{
+			Vector3 targetPos = target.position + body.GetOffsetVector();
+			transform.position = targetPos;
 
-		Follow( target );
+			Follow( target );
+		}
 	}
     
     public Vector3 GetEulerAngles()
@@ -107,10 +115,14 @@ public class PlayerController : MonoBehaviour
 	{
         if( ( GameState.navigationMode == GameState.NavigationMode.Follow ) && ( followTarget != null ) )
         {
-            float step = followSpeed * Time.deltaTime;
-            Vector3 targetPos = followTarget.position + ( followTarget.transform.up - followTarget.transform.forward ) * 20.0f;
+			BodyBehavior body = followTarget.gameObject.GetComponentInChildren<BodyBehavior>();
+			if( body != null )
+			{
+				float step = followSpeed * Time.deltaTime;
+				Vector3 targetPos = followTarget.position + body.GetOffsetVector();
 
-            transform.position = Vector3.MoveTowards( transform.position, targetPos, step );
+				transform.position = Vector3.MoveTowards( transform.position, targetPos, step );
+			}
         }
 	}
 }

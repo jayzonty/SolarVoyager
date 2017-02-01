@@ -7,8 +7,9 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 	public Dropdown planetsDropdown;
-	
 	public DialogueCanvasBehaviour dialogueCanvas;
+	
+	public VRContextMenu vrContextMenu;
 	
 	private static UIManager instance;
 	public static UIManager Instance
@@ -43,6 +44,27 @@ public class UIManager : MonoBehaviour
 		dialogueCanvas.gameObject.SetActive( false );
 	}
 	
+	public bool IsVRContextMenuVisible()
+	{
+		return ( ( vrContextMenu != null ) && ( vrContextMenu.IsVisible ) );
+	}
+	
+	public void ShowVRContextMenu()
+	{
+		if( vrContextMenu != null )
+		{
+			vrContextMenu.Show();
+		}
+	}
+	
+	public void HideVRContextMenu()
+	{
+		if( vrContextMenu != null )
+		{
+			vrContextMenu.Hide();
+		}
+	}
+	
 	void Awake()
 	{
 		instance = this;
@@ -52,6 +74,10 @@ public class UIManager : MonoBehaviour
 	
 	void Start()
 	{
+		if( vrContextMenu != null )
+		{
+			vrContextMenu.Hide();
+		}
 	}
 	
 	void Update()

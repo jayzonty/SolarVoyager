@@ -47,7 +47,7 @@ public class GameController : MonoBehaviour
 		
 		// Uncomment to use sample query for testing purposes.
 		//clip = Resources.Load( "Sounds/how-big-is-planet-mars" ) as AudioClip;
-		clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
+		//clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
 		
 		SpeechQueryParams speechQueryParams;
@@ -85,10 +85,9 @@ public class GameController : MonoBehaviour
 			// Proceed with synthesizing the response to speech.
 			SpeechSynthesisOptions options;
 			
-			options.locale = "en-US";
-			//options.locale = "ja-JP";
+			//options.locale = "en-US";
+			options.locale = "ja-JP";
 			options.voiceType = SpeechSynthesisOptions.VoiceType.Female;
-			//options.voiceName = "Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)";
 			
 			SpeechSynthesisHandler speechSynthesisHandler = new SpeechSynthesisHandler( options );
 			speechSynthesisHandler.SpeechSynthesisFinished += HandleSpeechSynthesisFinished;

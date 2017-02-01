@@ -4,7 +4,7 @@ public class OrbitBehavior : MonoBehaviour
 {
     public static readonly int NUM_POINTS = 180;
     public float inclination;
-    public float period;
+    public float period; // in seconds
 
     public bool circularOrbit = true;
 
