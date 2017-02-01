@@ -23,9 +23,20 @@ public class VirtualAssistantBehaviour : MonoBehaviour
 		transform.position = playerPos + player.right * 2.0f;
     }
 	
-	public void Speak( AudioClip clip )
+	public void Speak( string text, AudioClip clip )
 	{
-		audioSource.clip = clip;
-		audioSource.Play();
+		Dialogue dialogue = new Dialogue();
+		dialogue.AddDialogueLine( text, clip );
+		
+		DialogueCanvasBehaviour dialogueCanvas = UIManager.Instance.dialogueCanvas;
+		
+		GameState.SetCurrentMode( GameState.Mode.Dialogue );
+		
+		dialogueCanvas.InitializeDialogue( dialogue );
+		dialogueCanvas.SetAudioSource( audioSource );
+		
+		UIManager.Instance.ShowDialogueBox();
+		
+		dialogueCanvas.ShowNextLine();
 	}
 }

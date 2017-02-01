@@ -52,5 +52,17 @@ public class KeyboardInputHandler : MonoBehaviour
 		{
 			Cursor.lockState = ( Cursor.lockState == CursorLockMode.Locked ) ? CursorLockMode.None : CursorLockMode.Locked;
 		}
+		
+		if( Input.GetKeyDown( KeyCode.Return ) )
+		{
+			if( UIManager.Instance.dialogueCanvas.HasNextLine() )
+			{
+				UIManager.Instance.dialogueCanvas.ShowNextLine();
+			}
+			else
+			{
+				UIManager.Instance.HideDialogueBox();
+			}
+		}
 	}
 }

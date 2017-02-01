@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public delegate void OnSpeechSynthesisFinished( AudioClip clip );
+public delegate void OnSpeechSynthesisFinished( string transcription, AudioClip clip );
 
 public class SpeechSynthesisHandler
 {
@@ -88,7 +88,7 @@ public class SpeechSynthesisHandler
 		
 		if( SpeechSynthesisFinished != null )
 		{
-			SpeechSynthesisFinished( speechClip );
+			SpeechSynthesisFinished( text, speechClip );
 		}
 	}
 	

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class QueryResponse
+public struct SpeechQueryParams
 {
-	public string response;
-	public string transcription;
+	public string planet;
 }

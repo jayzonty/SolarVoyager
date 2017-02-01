@@ -14,10 +14,12 @@ public class SpeechQueryHandler
 	private const string TEMP_FILE_NAME = "speech_temp.wav";
 	
 	private AudioClip speechQueryClip;
+	private SpeechQueryParams speechQueryParams;
 	
-	public SpeechQueryHandler( AudioClip speechQueryClip )
+	public SpeechQueryHandler( AudioClip speechQueryClip, SpeechQueryParams speechQueryParams )
 	{
 		this.speechQueryClip = speechQueryClip;
+		this.speechQueryParams = speechQueryParams;
 	}
 	
 	public IEnumerator PerformQuery()
@@ -34,7 +36,7 @@ public class SpeechQueryHandler
 		}
 		
 		WWWForm form = new WWWForm();
-		form.AddField( Constants.QUERY_KEY, "none" );
+		form.AddField( Constants.QUERY_KEY, JsonUtility.ToJson( speechQueryParams ) );
 		form.AddBinaryData( Constants.WAV_FILE_KEY, localFile.bytes, "speech.wav" );
 		
 		WWW request = new WWW( Constants.SPEECH_QUERY_URL, form );

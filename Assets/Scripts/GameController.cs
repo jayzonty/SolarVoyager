@@ -15,9 +15,17 @@ public class GameController : MonoBehaviour
 	
 	public VirtualAssistantBehaviour virtualAssistantBehaviour;
 	
-	void Start()
-	{	
+	public string target;
+	
+	public Transform playerTransform;
+	
+	void Awake()
+	{
 		instance = this;
+	}
+	
+	void Start()
+	{
 	}
 	
 	void Update()
@@ -36,23 +44,26 @@ public class GameController : MonoBehaviour
 		SpeechRecording.StopRecording();
 		
 		AudioClip clip = SpeechRecording.GetMostRecentClip();
-		if( clip == null )
-		{
-			// Use sample query for testing purposes.
-			/*clip = Resources.Load( "Sounds/how-big-is-planet-mars" ) as AudioClip;
-			SpeechQueryHandler speechQueryHandler = new SpeechQueryHandler( clip );
-			speechQueryHandler.SpeechQueryFinished += HandleSpeechQueryFinished;
-			
-			GameState.SetQueryState( GameState.QueryState.Querying );
 		
-			StartCoroutine( speechQueryHandler.PerformQuery() );*/
+		// Uncomment to use sample query for testing purposes.
+		//clip = Resources.Load( "Sounds/how-big-is-planet-mars" ) as AudioClip;
+		clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
+		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
+		
+		SpeechQueryParams speechQueryParams;
+		speechQueryParams.planet = target;
+		
+		Debug.Log( "SpeechQueryParams: " + JsonUtility.ToJson( speechQueryParams ) );
+		
+		if( clip == null )
+		{	
 			Debug.LogError( "Something went wrong with the Microphone!" );
 			
 			GameState.SetQueryState( GameState.QueryState.Idle );
 		}
 		else
 		{
-			SpeechQueryHandler speechQueryHandler = new SpeechQueryHandler( clip );
+			SpeechQueryHandler speechQueryHandler = new SpeechQueryHandler( clip, speechQueryParams );
 			speechQueryHandler.SpeechQueryFinished += HandleSpeechQueryFinished;
 			
 			GameState.SetQueryState( GameState.QueryState.Querying );
@@ -92,13 +103,13 @@ public class GameController : MonoBehaviour
 		}
 	}
 	
-	private void HandleSpeechSynthesisFinished( AudioClip clip )
+	private void HandleSpeechSynthesisFinished( string transcription, AudioClip clip )
 	{
 		if( clip != null )
 		{
 			GameState.SetQueryState( GameState.QueryState.Idle );
 			
-			virtualAssistantBehaviour.Speak( clip );
+			virtualAssistantBehaviour.Speak( transcription, clip );
 		}
 	}
 }

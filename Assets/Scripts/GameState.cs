@@ -14,10 +14,17 @@ public class GameState
 	{
 		Idle, Recording, Querying, Synthesizing
 	}
+	
+	public enum Mode
+	{
+		Navigating, Dialogue
+	}
     
     public static NavigationMode navigationMode = NavigationMode.Free;
 	
 	private static QueryState queryState = QueryState.Idle;
+	
+	private static Mode currentMode = Mode.Navigating;
 	
 	public static QueryState CurrentQueryState
 	{
@@ -32,5 +39,20 @@ public class GameState
 		queryState = state;
 		
 		Debug.Log( "Query State Changed: " + state.ToString() );
+	}
+	
+	public static Mode CurrentMode
+	{
+		get
+		{
+			return currentMode;
+		}
+	}
+	
+	public static void SetCurrentMode( Mode mode )
+	{
+		currentMode = mode;
+		
+		Debug.Log( "Current mode changed to " + mode.ToString() );
 	}
 }
