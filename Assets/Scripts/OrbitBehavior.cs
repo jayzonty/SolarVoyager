@@ -39,6 +39,16 @@ public class OrbitBehavior : MonoBehaviour
         if( circularOrbit )
         {
             CircularOrbitInit();
+			CircularOrbitCalculatePosition();
+		
+			// TODO: Refactor. This is really bad lol.
+			if( PlayerController.instance.followTarget != null )
+			{
+				if( PlayerController.instance.followTarget.transform == body.transform )
+				{
+					PlayerController.instance.WarpToPlanet( body.transform );
+				}
+			}
         }
     }
 
@@ -57,7 +67,7 @@ public class OrbitBehavior : MonoBehaviour
 
         LineRenderer lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.numPositions = NUM_POINTS + 1;
-		lineRenderer.startWidth = lineRenderer.endWidth = 0.75f;
+		lineRenderer.startWidth = lineRenderer.endWidth = 1.25f;
         //lineRenderer.material = orbitLineMaterial;
         lineRenderer.useWorldSpace = false;
 
@@ -75,19 +85,23 @@ public class OrbitBehavior : MonoBehaviour
 
     void CircularOrbitUpdate()
     {
-        // For a circular orbit, radius is the mean between aphelion and perihelion
-        float radius = ( aphelion + perihelion ) / 2.0f;
-
         float velocity = 2 * Mathf.PI / period;
-
         theta += velocity * Time.deltaTime;
 		
-        float bx = radius * Mathf.Cos( theta );
+        CircularOrbitCalculatePosition();
+    }
+	
+	void CircularOrbitCalculatePosition()
+	{
+		// For a circular orbit, radius is the mean between aphelion and perihelion
+        float radius = ( aphelion + perihelion ) / 2.0f;
+		
+		float bx = radius * Mathf.Cos( theta );
         float by = 0.0f;
         float bz = radius * Mathf.Sin( theta );
 
         body.transform.localPosition = new Vector3( bx, by, bz );
-    }
+	}
 
     void EllipticalOrbitUpdate()
     {

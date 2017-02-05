@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 	
     public float followSpeed = 50.0f;
 
-    private Transform followTarget;
+    public Transform followTarget;
 
     private AudioSource audioSource;
     
