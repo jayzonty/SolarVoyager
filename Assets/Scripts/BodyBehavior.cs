@@ -3,6 +3,7 @@
 public class BodyBehavior : MonoBehaviour
 {
 	//public BodyBehavior other;
+	public string planetName;
     
 	public bool shouldRotate = true;
     public float rotationPeriod = 360.0f;

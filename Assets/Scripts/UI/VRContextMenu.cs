@@ -32,17 +32,23 @@ public class VRContextMenu : MonoBehaviour
 	
 	public void Show()
 	{
-		canvasGroup.alpha = 1.0f;
-		canvasGroup.blocksRaycasts = true;
-		
-		isVisible = true;
+		if( canvasGroup != null )
+		{
+			canvasGroup.alpha = 1.0f;
+			canvasGroup.blocksRaycasts = true;
+			
+			isVisible = true;
+		}
 	}
 	
 	public void Hide()
 	{
-		canvasGroup.alpha = 0.0f;
-		canvasGroup.blocksRaycasts = false;
+		if( canvasGroup != null )
+		{
+			canvasGroup.alpha = 0.0f;
+			canvasGroup.blocksRaycasts = false;
 		
-		isVisible = false;
+			isVisible = false;
+		}
 	}
 }

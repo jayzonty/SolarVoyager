@@ -50,8 +50,22 @@ public class GameController : MonoBehaviour
 		//clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
 		
+		// For now, consider "this" planet as the nearest planet from the player (euclid distance)
+		BodyBehavior[] planets = GameObject.FindObjectsOfType<BodyBehavior>();
+		BodyBehavior nearestPlanet = null;
+		float minDist = float.MaxValue;
+		foreach( BodyBehavior planet in planets )
+		{
+			float dist = Vector3.Distance( playerTransform.position, planet.transform.position );
+			if( dist < minDist )
+			{
+				nearestPlanet = planet;
+				minDist = dist;
+			}
+		}
+		
 		SpeechQueryParams speechQueryParams;
-		speechQueryParams.planet = target;
+		speechQueryParams.planet = nearestPlanet.planetName.ToLower();
 		
 		Debug.Log( "SpeechQueryParams: " + JsonUtility.ToJson( speechQueryParams ) );
 		
@@ -85,8 +99,8 @@ public class GameController : MonoBehaviour
 			// Proceed with synthesizing the response to speech.
 			SpeechSynthesisOptions options;
 			
-			//options.locale = "en-US";
-			options.locale = "ja-JP";
+			options.locale = "en-US";
+			//options.locale = "ja-JP";
 			options.voiceType = SpeechSynthesisOptions.VoiceType.Female;
 			
 			SpeechSynthesisHandler speechSynthesisHandler = new SpeechSynthesisHandler( options );

@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
 		BodyBehavior body = target.gameObject.GetComponentInChildren<BodyBehavior>();
 		if( body != null )
 		{
-			Vector3 targetPos = target.position + body.GetOffsetVector();
+			Vector3 targetPos = body.transform.position + body.GetOffsetVector();
 			transform.position = targetPos;
 
 			Follow( target );
@@ -119,7 +119,7 @@ public class PlayerController : MonoBehaviour
 			if( body != null )
 			{
 				float step = followSpeed * Time.deltaTime;
-				Vector3 targetPos = followTarget.position + body.GetOffsetVector();
+				Vector3 targetPos = body.transform.position + body.GetOffsetVector();
 
 				transform.position = Vector3.MoveTowards( transform.position, targetPos, step );
 			}

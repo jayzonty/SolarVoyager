@@ -57,7 +57,7 @@ public class OrbitBehavior : MonoBehaviour
 
         LineRenderer lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.numPositions = NUM_POINTS + 1;
-		lineRenderer.startWidth = lineRenderer.endWidth = 2.0f;
+		lineRenderer.startWidth = lineRenderer.endWidth = 0.75f;
         //lineRenderer.material = orbitLineMaterial;
         lineRenderer.useWorldSpace = false;
 
