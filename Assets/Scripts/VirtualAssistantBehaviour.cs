@@ -9,28 +9,63 @@ public class VirtualAssistantBehaviour : MonoBehaviour
 	
 	private AudioSource audioSource;
 	
-    // Use this for initialization
+	private MeshRenderer meshRenderer;
+	
+	void Awake()
+	{
+		audioSource = GetComponent<AudioSource>();
+		
+		meshRenderer = GetComponentInChildren<MeshRenderer>();
+	}
+	
     void Start()
     {
-		audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-		// Attempt to follow player
-		Vector3 playerPos = player.position;		
-		transform.position = playerPos + player.right * 2.0f;
+		if( player != null )
+		{
+			// Attempt to follow player
+			Vector3 playerPos = player.position;
+			//transform.position = playerPos + Vector3.forward;
+		}
     }
+	
+	public void Show()
+	{
+		if( meshRenderer != null )
+		{
+			meshRenderer.enabled = true;
+		}
+	}
+	
+	public void Hide()
+	{
+		if( meshRenderer != null )
+		{
+			meshRenderer.enabled = false;
+		}
+	}
+	
+	public bool IsVisible
+	{
+		get
+		{
+			return meshRenderer.enabled;
+		}
+	}
 	
 	public void Speak( string text, AudioClip clip )
 	{
 		DialogueCanvasBehaviour dialogueCanvas = UIManager.Instance.dialogueCanvas;
-		
-		if( dialogueCanvas.gameObject.activeSelf )
+		if( dialogueCanvas != null )
 		{
+			// TODO: Original question should be stored somewhere else.
+			string originalQuestion = dialogueCanvas.GetText();
+			
 			Dialogue dialogue = new Dialogue();
-			dialogue.AddDialogueLine( text, clip );
+			dialogue.AddDialogueLine( originalQuestion + "\n\nAnswer: " + text, clip );
 			
 			GameState.SetCurrentMode( GameState.Mode.Dialogue );
 			

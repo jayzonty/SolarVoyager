@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent( typeof( CanvasGroup ) )]
 public class DialogueCanvasBehaviour : MonoBehaviour
 {
 	private Dialogue dialogue;
@@ -13,6 +14,8 @@ public class DialogueCanvasBehaviour : MonoBehaviour
 	
 	private Text textField;
 	
+	private CanvasGroup canvasGroup;
+	
 	void Awake()
 	{
 		textField = GetComponentInChildren<Text>();
@@ -20,6 +23,8 @@ public class DialogueCanvasBehaviour : MonoBehaviour
 		{
 			Debug.LogError( "DialogCanvas must have a child with a Text component!" );
 		}
+		
+		canvasGroup = GetComponent<CanvasGroup>();
 	}
 	
 	void Start()
@@ -30,6 +35,42 @@ public class DialogueCanvasBehaviour : MonoBehaviour
 	{
 	}
 	
+	public void Show()
+	{
+		Show( 1.0f );
+	}
+	
+	public void Show( float alpha )
+	{
+		canvasGroup.alpha = alpha;
+	}
+	
+	public void Close()
+	{
+		if( audioSource != null )
+		{
+			audioSource.Stop();
+		}
+		
+		canvasGroup.alpha = 0.0f;
+	}
+	
+	public bool IsVisible
+	{
+		get
+		{
+			return ( canvasGroup.alpha > 0.0f );
+		}
+	}
+	
+	public float Alpha
+	{
+		get
+		{
+			return canvasGroup.alpha;
+		}
+	}
+	
 	public void SetAudioSource( AudioSource audioSource )
 	{
 		this.audioSource = audioSource;
@@ -38,6 +79,16 @@ public class DialogueCanvasBehaviour : MonoBehaviour
 	public void ClearAudioSource()
 	{
 		this.audioSource = null;
+	}
+	
+	public void ShowText( string text )
+	{
+		textField.text = text;
+	}
+	
+	public string GetText()
+	{
+		return textField.text;
 	}
 	
 	public void InitializeDialogue( Dialogue dialogue )
@@ -81,11 +132,11 @@ public class DialogueCanvasBehaviour : MonoBehaviour
 		linePointer = 0;
 	}
 	
-	public void Close()
+	protected void OnShow()
 	{
-		if( audioSource != null )
-		{
-			audioSource.Stop();
-		}
+	}
+	
+	protected void OnHide()
+	{
 	}
 }

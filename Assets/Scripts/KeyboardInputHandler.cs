@@ -38,15 +38,20 @@ public class KeyboardInputHandler : MonoBehaviour
         
         PlayerController.instance.SetEulerAngles( lookRotation );
             
-        if( GameState.navigationMode == GameState.NavigationMode.Free )
-        {
-            // Handle position
-            Vector3 movement = new Vector3();
-            movement.x = Input.GetAxisRaw( "Horizontal" );
-            movement.z = Input.GetAxisRaw( "Vertical" );
+		// Handle position
+		Vector3 movement = new Vector3();
+		movement.x = Input.GetAxisRaw( "Horizontal" );
+		movement.z = Input.GetAxisRaw( "Vertical" );
             
-            PlayerController.instance.Move( movement );
-        }
+		if( movement.x != 0.0f || movement.z != 0.0f )
+		{
+			PlayerController.instance.Move( movement );
+			
+			if( GameState.navigationMode == GameState.NavigationMode.Follow )
+			{
+				GameState.navigationMode = GameState.NavigationMode.Free;
+			}
+		}
         
 		if( Input.GetKeyDown( KeyCode.Space ) )
 		{
@@ -62,6 +67,22 @@ public class KeyboardInputHandler : MonoBehaviour
 			else
 			{
 				UIManager.Instance.HideDialogueBox();
+			}
+		}
+		
+		if( Input.GetKeyDown( KeyCode.V ) )
+		{
+			VirtualAssistantBehaviour virtualAssistant = GameController.Instance.virtualAssistantBehaviour;
+			if( virtualAssistant != null )
+			{
+				if( virtualAssistant.IsVisible )
+				{
+					virtualAssistant.Hide();
+				}
+				else
+				{
+					virtualAssistant.Show();
+				}
 			}
 		}
 	}

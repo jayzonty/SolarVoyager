@@ -34,14 +34,18 @@ public class UIManager : MonoBehaviour
 	
 	public void ShowDialogueBox()
 	{
-		dialogueCanvas.gameObject.SetActive( true );
+		if( dialogueCanvas != null )
+		{
+			dialogueCanvas.Show();
+		}
 	}
 	
 	public void HideDialogueBox()
 	{
-		dialogueCanvas.Close();
-		
-		dialogueCanvas.gameObject.SetActive( false );
+		if( dialogueCanvas != null )
+		{
+			dialogueCanvas.Close();
+		}
 	}
 	
 	public bool IsVRContextMenuVisible()
@@ -69,7 +73,10 @@ public class UIManager : MonoBehaviour
 	{
 		instance = this;
 		
-		dialogueCanvas.gameObject.SetActive( false );
+		if( dialogueCanvas != null )
+		{
+			dialogueCanvas.Close();
+		}
 	}
 	
 	void Start()

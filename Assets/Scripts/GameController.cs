@@ -49,6 +49,8 @@ public class GameController : MonoBehaviour
 		//clip = Resources.Load( "Sounds/how-big-is-planet-mars" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
+		//clip = Resources.Load( "Sounds/how-big-is-planet-venus-tts" ) as AudioClip;
+		//clip = Resources.Load( "Sounds/go-to-mars-tts" ) as AudioClip;
 		
 		// For now, consider "this" planet as the nearest planet from the player (euclid distance)
 		BodyBehavior[] planets = GameObject.FindObjectsOfType<BodyBehavior>();
@@ -65,7 +67,14 @@ public class GameController : MonoBehaviour
 		}
 		
 		SpeechQueryParams speechQueryParams;
-		speechQueryParams.planet = nearestPlanet.planetName.ToLower();
+		if( nearestPlanet != null )
+		{
+			speechQueryParams.planet = nearestPlanet.planetName.ToLower();
+		}
+		else
+		{
+			speechQueryParams.planet = "none";
+		}
 		
 		Debug.Log( "SpeechQueryParams: " + JsonUtility.ToJson( speechQueryParams ) );
 		
@@ -79,6 +88,15 @@ public class GameController : MonoBehaviour
 		{
 			SpeechQueryHandler speechQueryHandler = new SpeechQueryHandler( clip, speechQueryParams );
 			speechQueryHandler.SpeechQueryFinished += HandleSpeechQueryFinished;
+			
+			// Show a dialog box indicating that the system is currently querying.
+			if( UIManager.Instance.dialogueCanvas != null )
+			{
+				UIManager.Instance.dialogueCanvas.ClearAudioSource();
+				UIManager.Instance.dialogueCanvas.ShowText( "Processing Query..." );
+				
+				UIManager.Instance.ShowDialogueBox();
+			}
 			
 			GameState.SetQueryState( GameState.QueryState.Querying );
 		
@@ -96,6 +114,15 @@ public class GameController : MonoBehaviour
 		// If there is a valid response...
 		if( response != null )
 		{
+			// Show a dialog box showing the original question.
+			if( UIManager.Instance.dialogueCanvas != null )
+			{
+				UIManager.Instance.dialogueCanvas.ClearAudioSource();
+				UIManager.Instance.dialogueCanvas.ShowText( "Question: " + response.transcription );
+				
+				UIManager.Instance.ShowDialogueBox();
+			}
+			
 			// Proceed with synthesizing the response to speech.
 			SpeechSynthesisOptions options;
 			
