@@ -5,26 +5,21 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance = null;
 
     private Camera playerCamera = null;
-    
-	public float baseMovementSpeed = 50.0f;
-	
-    public float movementSpeed = 50.0f;
-	public float movementAcceleration = 2.0f;
 	
     public float followSpeed = 50.0f;
 
     public Transform followTarget;
 
     private AudioSource audioSource;
+	
+	private MovementBehaviour movementBehaviour;
     
-    // Note: Multiplication with deltaTime is handled inside this method
     public void Move( Vector3 direction )
-    {
-        Vector3 velocity = direction.normalized * movementSpeed * Time.deltaTime;
-        //velocity = playerCamera.transform.TransformDirection( velocity );
-        velocity = playerCamera.transform.localToWorldMatrix * velocity;
-
-        transform.Translate( velocity, Space.World );
+    {	
+		if( movementBehaviour != null )
+		{
+			movementBehaviour.Move( playerCamera.transform.localToWorldMatrix * direction );
+		}
     }
 
     public void DebugFollow()
@@ -105,6 +100,8 @@ public class PlayerController : MonoBehaviour
         playerCamera = GetComponentInChildren<Camera>();
 
         audioSource = GetComponentInChildren<AudioSource>();
+		
+		movementBehaviour = GetComponent<MovementBehaviour>();
     }
 
 	void Start()
