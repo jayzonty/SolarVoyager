@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
 	
 	public void ShowDialogueBox()
 	{
-		if( dialogueCanvas != null )
+		if( ( dialogueCanvas != null ) && ( !dialogueCanvas.IsVisible ) )
 		{
 			dialogueCanvas.Show();
 		}
@@ -72,15 +72,15 @@ public class UIManager : MonoBehaviour
 	void Awake()
 	{
 		instance = this;
-		
-		if( dialogueCanvas != null )
-		{
-			dialogueCanvas.Close();
-		}
 	}
 	
 	void Start()
 	{
+		if( dialogueCanvas != null )
+		{
+			dialogueCanvas.Close( false );
+		}
+		
 		if( vrContextMenu != null )
 		{
 			vrContextMenu.Hide();

@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
 		//clip = Resources.Load( "Sounds/how-big-is-planet-mars" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
-		//clip = Resources.Load( "Sounds/how-big-is-planet-venus-tts" ) as AudioClip;
+		clip = Resources.Load( "Sounds/how-big-is-planet-venus-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/go-to-mars-tts" ) as AudioClip;
 		
 		// For now, consider "this" planet as the nearest planet from the player (euclid distance)

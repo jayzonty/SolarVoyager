@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent( typeof( CanvasGroup ) )]
 public class DialogueCanvasBehaviour : MonoBehaviour
 {
 	private Dialogue dialogue;
@@ -15,6 +14,7 @@ public class DialogueCanvasBehaviour : MonoBehaviour
 	private Text textField;
 	
 	private CanvasGroup canvasGroup;
+	private Animator animator;
 	
 	void Awake()
 	{
@@ -25,6 +25,7 @@ public class DialogueCanvasBehaviour : MonoBehaviour
 		}
 		
 		canvasGroup = GetComponent<CanvasGroup>();
+		animator = GetComponent<Animator>();
 	}
 	
 	void Start()
@@ -37,22 +38,41 @@ public class DialogueCanvasBehaviour : MonoBehaviour
 	
 	public void Show()
 	{
-		Show( 1.0f );
+		Show( true );
 	}
 	
-	public void Show( float alpha )
+	public void Show( bool animate )
 	{
-		canvasGroup.alpha = alpha;
+		if( animate )
+		{
+			animator.SetTrigger( "MenuShowTrigger" );
+		}
+		else
+		{
+			canvasGroup.alpha = 1.0f;
+		}
 	}
 	
 	public void Close()
+	{
+		Close( true );
+	}
+	
+	public void Close( bool animate )
 	{
 		if( audioSource != null )
 		{
 			audioSource.Stop();
 		}
 		
-		canvasGroup.alpha = 0.0f;
+		if( animate )
+		{
+			animator.SetTrigger( "MenuHideTrigger" );
+		}
+		else
+		{
+			canvasGroup.alpha = 0.0f;
+		}
 	}
 	
 	public bool IsVisible
