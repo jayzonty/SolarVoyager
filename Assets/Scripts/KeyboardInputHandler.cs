@@ -42,11 +42,11 @@ public class KeyboardInputHandler : MonoBehaviour
 		Vector3 movement = new Vector3();
 		movement.x = Input.GetAxisRaw( "Horizontal" );
 		movement.z = Input.GetAxisRaw( "Vertical" );
+		
+		PlayerController.instance.Move( movement );
             
 		if( movement.x != 0.0f || movement.z != 0.0f )
 		{
-			PlayerController.instance.Move( movement );
-			
 			if( GameState.navigationMode == GameState.NavigationMode.Follow )
 			{
 				GameState.navigationMode = GameState.NavigationMode.Free;

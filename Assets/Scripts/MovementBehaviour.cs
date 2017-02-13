@@ -9,28 +9,33 @@ public class MovementBehaviour : MonoBehaviour
 	
 	public float maxSpeed = 50.0f;
 	
-	private Vector3 direction;
-	private float speed = 0.0f;
+	private Vector3 moveDirection;
+	private Vector3 velocity;
 	
-	// The direction is relative to the Transform component of
-	// whatever game object this script is attached to.
+	// Direction is expected to be expressed in world coordinates.
 	public void Move( Vector3 direction )
 	{
-		speed = Mathf.Clamp( speed + acceleration * Time.deltaTime, 0.0f, maxSpeed );
-		this.direction = direction.normalized;
+		moveDirection = direction.normalized;
 	}
 	
 	void Start()
 	{
-		speed = 0.0f;
+		moveDirection = velocity = Vector3.zero;
 	}
 	
 	void Update()
 	{
-		speed = Mathf.Clamp( speed - decceleration * Time.deltaTime, 0.0f, maxSpeed );
-		if( speed > 0.0f )
+		Vector3 accelerationVector = moveDirection * acceleration * Time.deltaTime;
+		velocity = Vector3.ClampMagnitude( velocity + accelerationVector, maxSpeed );
+		
+		transform.Translate( velocity, Space.World );
+		
+		if( velocity.sqrMagnitude > 0.0f )
 		{
-			transform.Translate( direction * speed );
+			float deltaSpeed = Mathf.Min( velocity.magnitude, decceleration * Time.deltaTime );
+			
+			Vector3 deccelerationVector = -velocity.normalized * deltaSpeed;
+			velocity += deccelerationVector;
 		}
 	}
 }
