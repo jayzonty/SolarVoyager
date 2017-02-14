@@ -36,6 +36,12 @@ public class GameController : MonoBehaviour
 	{
 		GameState.SetQueryState( GameState.QueryState.Recording );
 		
+		if( UIManager.Instance.progressWindow != null )
+		{
+			UIManager.Instance.progressWindow.Text = "Recording";
+			UIManager.Instance.progressWindow.Show();
+		}
+		
 		SpeechRecording.StartRecording();
 	}
 	
@@ -90,12 +96,10 @@ public class GameController : MonoBehaviour
 			speechQueryHandler.SpeechQueryFinished += HandleSpeechQueryFinished;
 			
 			// Show a dialog box indicating that the system is currently querying.
-			if( UIManager.Instance.dialogueCanvas != null )
+			if( UIManager.Instance.progressWindow != null )
 			{
-				UIManager.Instance.dialogueCanvas.ClearAudioSource();
-				UIManager.Instance.dialogueCanvas.ShowText( "Processing Query..." );
-				
-				UIManager.Instance.ShowDialogueBox();
+				UIManager.Instance.progressWindow.Text = "Processing Query...";
+				//UIManager.Instance.progressWindow.Show();
 			}
 			
 			GameState.SetQueryState( GameState.QueryState.Querying );
@@ -117,6 +121,8 @@ public class GameController : MonoBehaviour
 			// Show a dialog box showing the original question.
 			if( UIManager.Instance.dialogueCanvas != null )
 			{
+				UIManager.Instance.progressWindow.Close();
+				
 				UIManager.Instance.dialogueCanvas.ClearAudioSource();
 				UIManager.Instance.dialogueCanvas.ShowText( "Question: " + response.transcription );
 				

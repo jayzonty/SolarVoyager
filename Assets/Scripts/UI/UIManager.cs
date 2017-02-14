@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
 	
 	public VRContextMenu vrContextMenu;
 	
+	public ProgressWindowBehaviour progressWindow;
+	
 	private static UIManager instance;
 	public static UIManager Instance
 	{
