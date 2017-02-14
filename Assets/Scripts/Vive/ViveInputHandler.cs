@@ -52,9 +52,9 @@ public class ViveInputHandler : MonoBehaviour
 		else if( ( e.padX < -0.3f ) && ( -0.3f <= e.padY && e.padY <= 0.3f ) ) // Left button
 		{
 			Debug.Log( "Left button" );
-			if( UIManager.Instance.IsVRContextMenuVisible() )
+			if( UIManager.Instance.vrContextMenu.IsVisible )
 			{
-				UIManager.Instance.HideVRContextMenu();
+				UIManager.Instance.vrContextMenu.Close();
 				
 				GameObject[] planets = GameObject.FindGameObjectsWithTag( "Planet" );
 				foreach( GameObject go in planets )
@@ -111,9 +111,9 @@ public class ViveInputHandler : MonoBehaviour
 		{
 			Debug.Log( "Up button" );
 			
-			if( UIManager.Instance.IsVRContextMenuVisible() )
+			if( UIManager.Instance.vrContextMenu.IsVisible )
 			{
-				UIManager.Instance.HideVRContextMenu();
+				UIManager.Instance.vrContextMenu.Close();
 				
 				GameObject[] planets = GameObject.FindGameObjectsWithTag( "Planet" );
 				foreach( GameObject go in planets )
@@ -150,13 +150,13 @@ public class ViveInputHandler : MonoBehaviour
 	
 	void OnMenuButtonClicked( object sender, ClickedEventArgs e )
 	{
-		if( UIManager.Instance.IsVRContextMenuVisible() )
+		if( UIManager.Instance.vrContextMenu.IsVisible )
 		{
-			UIManager.Instance.HideVRContextMenu();
+			UIManager.Instance.vrContextMenu.Close();
 		}
 		else
 		{
-			UIManager.Instance.ShowVRContextMenu();
+			UIManager.Instance.vrContextMenu.Show();
 		}
 	}
 	

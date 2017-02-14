@@ -4,10 +4,6 @@ public class BodyBehavior : MonoBehaviour
 {
 	//public BodyBehavior other;
 	public string planetName;
-    
-	public bool shouldRotate = true;
-    public float rotationPeriod = 360.0f;
-	public float rotationTheta = 0.0f;
 	
 	// TODO: Make this more elegant lol
 	public float followOffset = 30.0f;
@@ -23,12 +19,6 @@ public class BodyBehavior : MonoBehaviour
 	
 	void Update()
 	{
-		rotationVelocity = 360.0f / rotationPeriod;
-		
-		rotationTheta += rotationVelocity * Time.deltaTime;
-		
-        // For now, just rotate on one axis
-        transform.localRotation = Quaternion.Euler( 0.0f, rotationTheta, 0.0f );
 	}
 	
 	// TODO: Make this more elegant lol

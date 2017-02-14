@@ -58,23 +58,22 @@ public class VirtualAssistantBehaviour : MonoBehaviour
 	
 	public void Speak( string text, AudioClip clip )
 	{
-		DialogueCanvasBehaviour dialogueCanvas = UIManager.Instance.dialogueCanvas;
-		if( dialogueCanvas != null )
+		DialogueWindowBehaviour dialogueWindow = UIManager.Instance.dialogueWindow;
+		if( dialogueWindow != null )
 		{
 			// TODO: Original question should be stored somewhere else.
-			string originalQuestion = dialogueCanvas.GetText();
+			string originalQuestion = dialogueWindow.GetText();
 			
 			Dialogue dialogue = new Dialogue();
 			dialogue.AddDialogueLine( originalQuestion + "\n\nAnswer: " + text, clip );
 			
 			GameState.SetCurrentMode( GameState.Mode.Dialogue );
 			
-			dialogueCanvas.InitializeDialogue( dialogue );
-			dialogueCanvas.SetAudioSource( audioSource );
+			dialogueWindow.InitializeDialogue( dialogue );
+			dialogueWindow.SetAudioSource( audioSource );
 			
-			UIManager.Instance.ShowDialogueBox();
-			
-			dialogueCanvas.ShowNextLine();
+			dialogueWindow.Show();
+			dialogueWindow.ShowNextLine();
 		}
 		else
 		{

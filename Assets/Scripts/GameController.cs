@@ -36,6 +36,11 @@ public class GameController : MonoBehaviour
 	{
 		GameState.SetQueryState( GameState.QueryState.Recording );
 		
+		if( UIManager.Instance.dialogueWindow.IsVisible )
+		{
+			UIManager.Instance.dialogueWindow.Close();
+		}
+		
 		if( UIManager.Instance.progressWindow != null )
 		{
 			UIManager.Instance.progressWindow.Text = "Recording";
@@ -119,14 +124,14 @@ public class GameController : MonoBehaviour
 		if( response != null )
 		{
 			// Show a dialog box showing the original question.
-			if( UIManager.Instance.dialogueCanvas != null )
+			if( UIManager.Instance.dialogueWindow != null )
 			{
 				UIManager.Instance.progressWindow.Close();
 				
-				UIManager.Instance.dialogueCanvas.ClearAudioSource();
-				UIManager.Instance.dialogueCanvas.ShowText( "Question: " + response.transcription );
+				UIManager.Instance.dialogueWindow.ClearAudioSource();
+				UIManager.Instance.dialogueWindow.ShowText( "Question: " + response.transcription );
 				
-				UIManager.Instance.ShowDialogueBox();
+				UIManager.Instance.dialogueWindow.Show();
 			}
 			
 			// Proceed with synthesizing the response to speech.

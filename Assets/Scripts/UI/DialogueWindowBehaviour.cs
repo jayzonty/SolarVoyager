@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DialogueCanvasBehaviour : MonoBehaviour
+public class DialogueWindowBehaviour : PopupWindowBehaviour
 {
 	private Dialogue dialogue;
 	private int linePointer;
@@ -13,81 +13,14 @@ public class DialogueCanvasBehaviour : MonoBehaviour
 	
 	private Text textField;
 	
-	private CanvasGroup canvasGroup;
-	private Animator animator;
-	
-	void Awake()
+	protected override void OnAwake()
 	{
+		base.OnAwake();
+		
 		textField = GetComponentInChildren<Text>();
 		if( textField == null )
 		{
 			Debug.LogError( "DialogCanvas must have a child with a Text component!" );
-		}
-		
-		canvasGroup = GetComponent<CanvasGroup>();
-		animator = GetComponent<Animator>();
-	}
-	
-	void Start()
-	{
-	}
-	
-	void Update()
-	{
-	}
-	
-	public void Show()
-	{
-		Show( true );
-	}
-	
-	public void Show( bool animate )
-	{
-		if( animate )
-		{
-			animator.SetTrigger( "MenuShowTrigger" );
-		}
-		else
-		{
-			canvasGroup.alpha = 1.0f;
-		}
-	}
-	
-	public void Close()
-	{
-		Close( true );
-	}
-	
-	public void Close( bool animate )
-	{
-		if( audioSource != null )
-		{
-			audioSource.Stop();
-		}
-		
-		if( animate )
-		{
-			animator.SetTrigger( "MenuHideTrigger" );
-		}
-		else
-		{
-			canvasGroup.alpha = 0.0f;
-		}
-	}
-	
-	public bool IsVisible
-	{
-		get
-		{
-			return ( canvasGroup.alpha > 0.0f );
-		}
-	}
-	
-	public float Alpha
-	{
-		get
-		{
-			return canvasGroup.alpha;
 		}
 	}
 	
@@ -150,13 +83,5 @@ public class DialogueCanvasBehaviour : MonoBehaviour
 	public void ResetLinePointer()
 	{
 		linePointer = 0;
-	}
-	
-	protected void OnShow()
-	{
-	}
-	
-	protected void OnHide()
-	{
 	}
 }

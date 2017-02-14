@@ -7,10 +7,9 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
 	public Dropdown planetsDropdown;
-	public DialogueCanvasBehaviour dialogueCanvas;
 	
+	public DialogueWindowBehaviour dialogueWindow;
 	public VRContextMenu vrContextMenu;
-	
 	public ProgressWindowBehaviour progressWindow;
 	
 	private static UIManager instance;
@@ -34,43 +33,6 @@ public class UIManager : MonoBehaviour
 		}
 	}
 	
-	public void ShowDialogueBox()
-	{
-		if( ( dialogueCanvas != null ) && ( !dialogueCanvas.IsVisible ) )
-		{
-			dialogueCanvas.Show();
-		}
-	}
-	
-	public void HideDialogueBox()
-	{
-		if( dialogueCanvas != null )
-		{
-			dialogueCanvas.Close();
-		}
-	}
-	
-	public bool IsVRContextMenuVisible()
-	{
-		return ( ( vrContextMenu != null ) && ( vrContextMenu.IsVisible ) );
-	}
-	
-	public void ShowVRContextMenu()
-	{
-		if( vrContextMenu != null )
-		{
-			vrContextMenu.Show();
-		}
-	}
-	
-	public void HideVRContextMenu()
-	{
-		if( vrContextMenu != null )
-		{
-			vrContextMenu.Hide();
-		}
-	}
-	
 	void Awake()
 	{
 		instance = this;
@@ -78,18 +40,9 @@ public class UIManager : MonoBehaviour
 	
 	void Start()
 	{
-		if( dialogueCanvas != null )
-		{
-			dialogueCanvas.Close( false );
-		}
-		
-		if( vrContextMenu != null )
-		{
-			vrContextMenu.Hide();
-		}
 	}
 	
 	void Update()
-	{	
+	{
 	}
 }

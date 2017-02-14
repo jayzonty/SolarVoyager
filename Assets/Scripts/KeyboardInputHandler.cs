@@ -60,13 +60,13 @@ public class KeyboardInputHandler : MonoBehaviour
 		
 		if( Input.GetKeyDown( KeyCode.Return ) )
 		{
-			if( UIManager.Instance.dialogueCanvas.HasNextLine() )
+			if( UIManager.Instance.dialogueWindow.HasNextLine() )
 			{
-				UIManager.Instance.dialogueCanvas.ShowNextLine();
+				UIManager.Instance.dialogueWindow.ShowNextLine();
 			}
 			else
 			{
-				UIManager.Instance.HideDialogueBox();
+				UIManager.Instance.dialogueWindow.Close();
 			}
 		}
 		
