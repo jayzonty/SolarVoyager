@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -32,6 +34,20 @@ public class GameController : MonoBehaviour
 	{
 	}
 	
+	public GameObject GetPlanet( string planetName )
+	{
+		GameObject[] planets = GameObject.FindGameObjectsWithTag( "Planet" );
+		foreach( GameObject go in planets )
+		{
+			if( string.Compare( go.name.ToLower(), planetName.ToLower() ) == 0 )
+			{
+				return go;
+			}
+		}
+		
+		return null;
+	}
+	
 	public void StartQuery()
 	{
 		GameState.SetQueryState( GameState.QueryState.Recording );
@@ -41,7 +57,7 @@ public class GameController : MonoBehaviour
 			UIManager.Instance.dialogueWindow.Close();
 		}
 		
-		if( UIManager.Instance.progressWindow != null )
+		if( UIManager.Instance.progressWindow != null && UIManager.Instance.progressWindow.gameObject.activeInHierarchy )
 		{
 			UIManager.Instance.progressWindow.Text = "Recording";
 			UIManager.Instance.progressWindow.Show();
@@ -60,8 +76,8 @@ public class GameController : MonoBehaviour
 		//clip = Resources.Load( "Sounds/how-big-is-planet-mars" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
-		clip = Resources.Load( "Sounds/how-big-is-planet-venus-tts" ) as AudioClip;
-		//clip = Resources.Load( "Sounds/go-to-mars-tts" ) as AudioClip;
+		//clip = Resources.Load( "Sounds/how-big-is-planet-venus-tts" ) as AudioClip;
+		clip = Resources.Load( "Sounds/go-to-mars-tts" ) as AudioClip;
 		
 		// For now, consider "this" planet as the nearest planet from the player (euclid distance)
 		BodyBehavior[] planets = GameObject.FindObjectsOfType<BodyBehavior>();
@@ -101,7 +117,7 @@ public class GameController : MonoBehaviour
 			speechQueryHandler.SpeechQueryFinished += HandleSpeechQueryFinished;
 			
 			// Show a dialog box indicating that the system is currently querying.
-			if( UIManager.Instance.progressWindow != null )
+			if( UIManager.Instance.progressWindow != null && UIManager.Instance.progressWindow.gameObject.activeInHierarchy )
 			{
 				UIManager.Instance.progressWindow.Text = "Processing Query...";
 				//UIManager.Instance.progressWindow.Show();
@@ -124,7 +140,7 @@ public class GameController : MonoBehaviour
 		if( response != null )
 		{
 			// Show a dialog box showing the original question.
-			if( UIManager.Instance.dialogueWindow != null )
+			if( UIManager.Instance.dialogueWindow != null && UIManager.Instance.dialogueWindow.gameObject.activeInHierarchy )
 			{
 				UIManager.Instance.progressWindow.Close();
 				
@@ -134,19 +150,32 @@ public class GameController : MonoBehaviour
 				UIManager.Instance.dialogueWindow.Show();
 			}
 			
-			// Proceed with synthesizing the response to speech.
-			SpeechSynthesisOptions options;
-			
-			options.locale = "en-US";
-			//options.locale = "ja-JP";
-			options.voiceType = SpeechSynthesisOptions.VoiceType.Female;
-			
-			SpeechSynthesisHandler speechSynthesisHandler = new SpeechSynthesisHandler( options );
-			speechSynthesisHandler.SpeechSynthesisFinished += HandleSpeechSynthesisFinished;
-			
-			GameState.SetQueryState( GameState.QueryState.Synthesizing );
-			
-			StartCoroutine( speechSynthesisHandler.Synthesize( response.response ) );
+			string[] temp = response.response.Split( new Char[]{ ' ' } );
+			if( string.Compare( temp[0], "[GOTO]" ) == 0 )
+			{
+				Debug.Log( temp[1] );
+				GameObject go = GetPlanet( temp[1] );
+				if( go != null )
+				{
+					PlayerController.instance.Follow( go.GetComponentInChildren<BodyBehavior>().transform );
+				}
+			}
+			else
+			{			
+				// Proceed with synthesizing the response to speech.
+				SpeechSynthesisOptions options;
+				
+				options.locale = "en-US";
+				//options.locale = "ja-JP";
+				options.voiceType = SpeechSynthesisOptions.VoiceType.Female;
+				
+				SpeechSynthesisHandler speechSynthesisHandler = new SpeechSynthesisHandler( options );
+				speechSynthesisHandler.SpeechSynthesisFinished += HandleSpeechSynthesisFinished;
+				
+				GameState.SetQueryState( GameState.QueryState.Synthesizing );
+				
+				StartCoroutine( speechSynthesisHandler.Synthesize( response.response ) );
+			}
 		}
 		else
 		{

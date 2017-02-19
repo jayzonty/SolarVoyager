@@ -59,7 +59,7 @@ public class VirtualAssistantBehaviour : MonoBehaviour
 	public void Speak( string text, AudioClip clip )
 	{
 		DialogueWindowBehaviour dialogueWindow = UIManager.Instance.dialogueWindow;
-		if( dialogueWindow != null )
+		if( dialogueWindow != null && dialogueWindow.gameObject.activeInHierarchy )
 		{
 			// TODO: Original question should be stored somewhere else.
 			string originalQuestion = dialogueWindow.GetText();

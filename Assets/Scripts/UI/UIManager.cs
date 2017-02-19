@@ -36,6 +36,10 @@ public class UIManager : MonoBehaviour
 	void Awake()
 	{
 		instance = this;
+		
+		dialogueWindow = GameObject.FindObjectOfType<DialogueWindowBehaviour>();
+		vrContextMenu = GameObject.FindObjectOfType<VRContextMenu>();
+		progressWindow = GameObject.FindObjectOfType<ProgressWindowBehaviour>();
 	}
 	
 	void Start()
