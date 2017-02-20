@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
+using SimpleJSON;
+
 public delegate void OnSpeechQueryFinished( string rawTextResponse, SpeechQueryResponse response );
 
 public class SpeechQueryHandler
@@ -51,11 +53,18 @@ public class SpeechQueryHandler
 		}
 		else
 		{
+			response = new SpeechQueryResponse();
+			
 			Debug.Log( request.text );
 			
 			rawTextResponse = request.text;
 			
-			response = JsonUtility.FromJson<SpeechQueryResponse>( rawTextResponse );
+			JSONNode node = JSON.Parse( request.text );
+			
+			response.transcription = node["transcription"].Value;
+			response.answer = node["response"]["answer"].Value;
+			response.queryType = node["response"]["qa_class"].Value;
+			response.targetPlanet = node["response"]["planet"].Value;
 		}
 		
 		if( SpeechQueryFinished != null )

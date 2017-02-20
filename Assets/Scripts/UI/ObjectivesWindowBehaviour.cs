@@ -10,11 +10,6 @@ public class ObjectivesWindowBehaviour : PopupWindowBehaviour
 	public Toggle generalFactsObjectiveToggle;
 	public Toggle randomFactObjectiveToggle;
 	
-	public string gotoTarget;
-	private string generalFactsTarget;
-	private string randomFactTarget;
-	private string randomFactAttribute;
-	
 	protected override void OnAwake()
 	{
 		base.OnAwake();
@@ -26,15 +21,9 @@ public class ObjectivesWindowBehaviour : PopupWindowBehaviour
 	{
 		Debug.Log( LocalizationManager.Instance.GetString( "gotoObjectiveTemplate" ) );
 		
-		// TODO: Generate random targets
-		gotoTarget = "mars";
-		generalFactsTarget = "earth";
-		randomFactTarget = "jupiter";
-		randomFactAttribute = "temperature";
-		
-		gotoObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.GOTO_OBJECTIVE_TEMPLATE ), gotoTarget );
-		generalFactsObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.GENERAL_FACTS_OBJECTIVE_TEMPLATE ), generalFactsTarget );
-		randomFactObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.RANDOM_FACT_OBJECTIVE_TEMPLATE ), randomFactAttribute, randomFactTarget );
+		gotoObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.GOTO_OBJECTIVE_TEMPLATE ), GameController.Instance.gotoTarget );
+		generalFactsObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.GENERAL_FACTS_OBJECTIVE_TEMPLATE ), GameController.Instance.generalFactsTarget );
+		randomFactObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.RANDOM_FACT_OBJECTIVE_TEMPLATE ), GameController.Instance.randomFactAttribute, GameController.Instance.randomFactTarget );
 		
 		Show();
 	}

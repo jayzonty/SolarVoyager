@@ -21,9 +21,20 @@ public class GameController : MonoBehaviour
 	
 	public Transform playerTransform;
 	
+	public string gotoTarget;
+	public string generalFactsTarget;
+	public string randomFactTarget;
+	public string randomFactAttribute;
+	
 	void Awake()
 	{
 		instance = this;
+		
+		// TODO: Generate random targets
+		gotoTarget = "mars";
+		generalFactsTarget = "earth";
+		randomFactTarget = "jupiter";
+		randomFactAttribute = "temperature";
 	}
 	
 	void Start()
@@ -77,7 +88,7 @@ public class GameController : MonoBehaviour
 		//clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-big-is-planet-venus-tts" ) as AudioClip;
-		clip = Resources.Load( "Sounds/go-to-mars-tts" ) as AudioClip;
+		//clip = Resources.Load( "Sounds/go-to-mars-tts" ) as AudioClip;
 		
 		// For now, consider "this" planet as the nearest planet from the player (euclid distance)
 		BodyBehavior[] planets = GameObject.FindObjectsOfType<BodyBehavior>();
@@ -139,28 +150,16 @@ public class GameController : MonoBehaviour
 		// If there is a valid response...
 		if( response != null )
 		{
-			// Show a dialog box showing the original question.
-			if( UIManager.Instance.dialogueWindow != null && UIManager.Instance.dialogueWindow.gameObject.activeInHierarchy )
+			if( string.Compare( response.queryType, "move" ) == 0 )
 			{
-				UIManager.Instance.progressWindow.Close();
-				
-				UIManager.Instance.dialogueWindow.ClearAudioSource();
-				UIManager.Instance.dialogueWindow.ShowText( "Question: " + response.transcription );
-				
-				UIManager.Instance.dialogueWindow.Show();
-			}
-			
-			string[] temp = response.response.Split( new Char[]{ ' ' } );
-			if( string.Compare( temp[0], "[GOTO]" ) == 0 )
-			{
-				Debug.Log( temp[1] );
-				GameObject go = GetPlanet( temp[1] );
+				GameObject go = GetPlanet( response.targetPlanet );
 				if( go != null )
 				{
-					if( string.Compare( temp[1], UIManager.Instance.objectivesWindow.gotoTarget ) == 0 )
+					if( string.Compare( response.targetPlanet, gotoTarget ) == 0 )
 					{
 						GameState.SetFlag( "gotoObjective" );
 					}
+					
 					PlayerController.instance.Follow( go.GetComponentInChildren<BodyBehavior>().transform );
 				}
 			}
@@ -178,13 +177,31 @@ public class GameController : MonoBehaviour
 				
 				GameState.SetQueryState( GameState.QueryState.Synthesizing );
 				
-				StartCoroutine( speechSynthesisHandler.Synthesize( response.response ) );
+				StartCoroutine( speechSynthesisHandler.Synthesize( response.answer ) );
+				
+				if( ( string.Compare( response.queryType, "state" ) == 0 ) && ( string.Compare( response.targetPlanet, generalFactsTarget ) == 0 ) )
+				{
+					GameState.SetFlag( "generalFactsObjective" );
+				}
+				else if( ( string.Compare( response.queryType, randomFactAttribute ) == 0 ) && ( string.Compare( response.targetPlanet, randomFactTarget ) == 0 ) )
+				{
+					GameState.SetFlag( "randomFactObjective" );
+				}
+			}
+			
+			// Show a dialog box showing the original question.
+			if( UIManager.Instance.dialogueWindow != null && UIManager.Instance.dialogueWindow.gameObject.activeInHierarchy )
+			{
+				UIManager.Instance.progressWindow.Close();
+				
+				UIManager.Instance.dialogueWindow.ClearAudioSource();
+				UIManager.Instance.dialogueWindow.ShowText( "Question: " + response.transcription );
+				
+				UIManager.Instance.dialogueWindow.Show();
 			}
 		}
-		else
-		{
-			GameState.SetQueryState( GameState.QueryState.Idle );
-		}
+		
+		GameState.SetQueryState( GameState.QueryState.Idle );
 	}
 	
 	private void HandleSpeechSynthesisFinished( string transcription, AudioClip clip )
