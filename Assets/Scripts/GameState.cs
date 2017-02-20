@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+
 using System.Collections;
+using System.Collections.Generic;
 
 public delegate void QueryStateChanged( GameState.QueryState oldState, GameState.QueryState newState );
 
@@ -25,6 +27,13 @@ public class GameState
 	private static QueryState queryState = QueryState.Idle;
 	
 	private static Mode currentMode = Mode.Navigating;
+	
+	private static HashSet<string> flags;
+	
+	static GameState()
+	{
+		flags = new HashSet<string>();
+	}
 	
 	public static QueryState CurrentQueryState
 	{
@@ -54,5 +63,15 @@ public class GameState
 		currentMode = mode;
 		
 		Debug.Log( "Current mode changed to " + mode.ToString() );
+	}
+	
+	public static void SetFlag( string flag )
+	{
+		flags.Add( flag );
+	}
+	
+	public static bool GetFlag( string flag )
+	{
+		return flags.Contains( flag );
 	}
 }
