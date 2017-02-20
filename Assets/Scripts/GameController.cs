@@ -59,7 +59,7 @@ public class GameController : MonoBehaviour
 		
 		if( UIManager.Instance.progressWindow != null && UIManager.Instance.progressWindow.gameObject.activeInHierarchy )
 		{
-			UIManager.Instance.progressWindow.Text = "Recording";
+			UIManager.Instance.progressWindow.Text = LocalizationManager.Instance.MessagesList.statusRecording;
 			UIManager.Instance.progressWindow.Show();
 		}
 		
@@ -77,7 +77,7 @@ public class GameController : MonoBehaviour
 		//clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-big-is-planet-venus-tts" ) as AudioClip;
-		clip = Resources.Load( "Sounds/go-to-mars-tts" ) as AudioClip;
+		//clip = Resources.Load( "Sounds/go-to-mars-tts" ) as AudioClip;
 		
 		// For now, consider "this" planet as the nearest planet from the player (euclid distance)
 		BodyBehavior[] planets = GameObject.FindObjectsOfType<BodyBehavior>();
@@ -119,7 +119,7 @@ public class GameController : MonoBehaviour
 			// Show a dialog box indicating that the system is currently querying.
 			if( UIManager.Instance.progressWindow != null && UIManager.Instance.progressWindow.gameObject.activeInHierarchy )
 			{
-				UIManager.Instance.progressWindow.Text = "Processing Query...";
+				UIManager.Instance.progressWindow.Text = LocalizationManager.Instance.MessagesList.statusProcessing;
 				//UIManager.Instance.progressWindow.Show();
 			}
 			

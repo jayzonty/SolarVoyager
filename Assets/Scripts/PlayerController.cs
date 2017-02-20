@@ -6,13 +6,20 @@ public class PlayerController : MonoBehaviour
 
     private Camera playerCamera = null;
 	
-    public float followSpeed = 50.0f;
+	public float minSpeed = 10.0f;
+	public float maxSpeed = 50.0f;
+    public float followSpeed = 30.0f;
 
     public Transform followTarget;
 
     private AudioSource audioSource;
 	
 	private MovementBehaviour movementBehaviour;
+	
+	public void AdjustFollowSpeed( float deltaSpeed )
+	{
+		followSpeed = Mathf.Clamp( followSpeed + deltaSpeed, minSpeed, maxSpeed );
+	}
     
     public void Move( Vector3 direction )
     {	
