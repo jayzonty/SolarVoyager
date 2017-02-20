@@ -3,7 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public delegate void QueryStateChanged( GameState.QueryState oldState, GameState.QueryState newState );
+public delegate void OnFlagStateChanged( string flag, bool oldValue, bool newValue );
 
 public class GameState
 {
@@ -29,6 +29,8 @@ public class GameState
 	private static Mode currentMode = Mode.Navigating;
 	
 	private static HashSet<string> flags;
+	
+	public static event OnFlagStateChanged FlagStateChanged;
 	
 	static GameState()
 	{
@@ -67,11 +69,37 @@ public class GameState
 	
 	public static void SetFlag( string flag )
 	{
-		flags.Add( flag );
+		if( !GetFlag( flag ) )
+		{
+			flags.Add( flag );
+			
+			if( FlagStateChanged != null )
+			{
+				FlagStateChanged( flag, false, true );
+			}
+		}
+	}
+	
+	public static void UnsetFlag( string flag )
+	{
+		if( GetFlag( flag ) )
+		{
+			flags.Remove( flag );
+			
+			if( FlagStateChanged != null )
+			{
+				FlagStateChanged( flag, true, false );
+			}
+		}
 	}
 	
 	public static bool GetFlag( string flag )
 	{
 		return flags.Contains( flag );
+	}
+	
+	public static void ClearFlags()
+	{
+		flags.Clear();
 	}
 }

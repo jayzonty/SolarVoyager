@@ -1,4 +1,8 @@
 {
 	"statusRecording": "Recording",
-	"statusProcessing": "Processing"
+	"statusProcessing": "Processing",
+	
+	"gotoObjectiveTemplate": "Go to {0}",
+	"generalFactsObjectiveTemplate": "Ask about {0}",
+	"randomFactObjectiveTemplate": "Ask about {0} of {1}"
 }

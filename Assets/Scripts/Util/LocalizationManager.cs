@@ -3,20 +3,14 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using SimpleJSON;
+
 public class LocalizationManager : MonoBehaviour
 {
 	public string locale = "en-US";
 	
-	private Dictionary<string, Messages> messagesCache;
-	
-	private Messages messagesList;
-	public Messages MessagesList
-	{
-		get
-		{
-			return messagesList;
-		}
-	}
+	private Dictionary<string, JSONNode> messagesCache;
+	private JSONNode messagesList;
 	
 	private static LocalizationManager instance = null;
 	public static LocalizationManager Instance
@@ -52,14 +46,20 @@ public class LocalizationManager : MonoBehaviour
 			}
 			else
 			{
-				messagesList = JsonUtility.FromJson<Messages>( textAsset.text );
+				messagesList = JSON.Parse( textAsset.text );
+				messagesCache.Add( locale, messagesList );
 			}
 		}
 	}
 	
+	public string GetString( string key )
+	{
+		return messagesList[key].Value;
+	}
+	
 	void Awake()
 	{
-		messagesCache = new Dictionary<string, Messages>();
+		messagesCache = new Dictionary<string, JSONNode>();
 		
 		LoadLocale( locale );
 	}

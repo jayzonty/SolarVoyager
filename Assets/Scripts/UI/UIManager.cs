@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
 	public DialogueWindowBehaviour dialogueWindow;
 	public VRContextMenu vrContextMenu;
 	public ProgressWindowBehaviour progressWindow;
+	public ObjectivesWindowBehaviour objectivesWindow;
 	
 	private static UIManager instance;
 	public static UIManager Instance
@@ -40,6 +41,7 @@ public class UIManager : MonoBehaviour
 		dialogueWindow = GameObject.FindObjectOfType<DialogueWindowBehaviour>();
 		vrContextMenu = GameObject.FindObjectOfType<VRContextMenu>();
 		progressWindow = GameObject.FindObjectOfType<ProgressWindowBehaviour>();
+		objectivesWindow = GameObject.FindObjectOfType<ObjectivesWindowBehaviour>();
 	}
 	
 	void Start()

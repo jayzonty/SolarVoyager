@@ -1,4 +1,8 @@
 {
 	"statusRecording": "録音中",
-	"statusProcessing": "処理中"
+	"statusProcessing": "処理中",
+	
+	"gotoObjectiveTemplate": "{0}に行きましょう！",
+	"generalFactsObjectiveTemplate": "{0}について聞きましょう！",
+	"randomFactObjectiveTemplate": "{1}の{0}について聞きましょう！"
 }
