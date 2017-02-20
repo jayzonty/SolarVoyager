@@ -26,11 +26,15 @@ public class ObjectivesWindowBehaviour : PopupWindowBehaviour
 	{
 		Debug.Log( LocalizationManager.Instance.GetString( "gotoObjectiveTemplate" ) );
 		
+		// TODO: Generate random targets
 		gotoTarget = "mars";
 		generalFactsTarget = "earth";
 		randomFactTarget = "jupiter";
 		randomFactAttribute = "temperature";
 		
+		gotoObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.GOTO_OBJECTIVE_TEMPLATE ), gotoTarget );
+		generalFactsObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.GENERAL_FACTS_OBJECTIVE_TEMPLATE ), generalFactsTarget );
+		randomFactObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.RANDOM_FACT_OBJECTIVE_TEMPLATE ), randomFactAttribute, randomFactTarget );
 		
 		Show();
 	}
