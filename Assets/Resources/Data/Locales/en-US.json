@@ -1,8 +1,20 @@
 {
+	"mercury": "Mercury",
+	"venus": "Venus",
+	"earth": "Earth",
+	"mars": "Mars",
+	"jupiter": "Jupiter",
+	"saturn": "Saturn",
+	"uranus": "Uranus",
+	"neptune": "Neptune",
+	
+	"revolution": "revolution period",
+	"rotation": "rotation period",
+	
 	"statusRecording": "Recording",
 	"statusProcessing": "Processing",
 	
 	"gotoObjectiveTemplate": "Go to {0}",
-	"generalFactsObjectiveTemplate": "Ask about {0}",
-	"randomFactObjectiveTemplate": "Ask about {0} of {1}"
+	"stateObjectiveTemplate": "Ask about {0}",
+	"randomFactObjectiveTemplate": "Ask about the {0} of {1}"
 }

@@ -1,8 +1,22 @@
 {
+	"mercury": "水星",
+	"venus": "金星",
+	"earth": "地球",
+	"mars": "火星",
+	"jupiter": "木星",
+	"saturn": "土星",
+	"uranus": "天王星",
+	"neptune": "海王星",
+	
+	"temperature": "温度",
+	"size": "大きさ",
+	"rotation": "自転周期",
+	"revolution": "公転周期",
+	
 	"statusRecording": "録音中",
 	"statusProcessing": "処理中",
 	
 	"gotoObjectiveTemplate": "{0}に行きましょう！",
-	"generalFactsObjectiveTemplate": "{0}について聞きましょう！",
+	"stateObjectiveTemplate": "{0}について聞きましょう！",
 	"randomFactObjectiveTemplate": "{1}の{0}について聞きましょう！"
 }

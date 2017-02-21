@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Constants
 {
-	public static readonly float FAR_PLANE = 3000.0f;
+	public static readonly string[] PLANET_KEYS = { "mercury", "venus", "earth", "mars", "jupiter", "saturn", "uranus", "neptune" };
+	public static readonly string[] ATTRIBUTE_KEYS = { "temperature", "size", "rotation", "revolution" };
 	
 	// Speech related constants
 	public static readonly string SPEECH_QUERY_URL = "ahcclm04:5000/";

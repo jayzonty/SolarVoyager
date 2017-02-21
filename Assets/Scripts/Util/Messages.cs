@@ -8,6 +8,6 @@ public class Messages
 	
 	// Objectives
 	public const string GOTO_OBJECTIVE_TEMPLATE = "gotoObjectiveTemplate";
-	public const string GENERAL_FACTS_OBJECTIVE_TEMPLATE = "generalFactsObjectiveTemplate";
+	public const string GENERAL_FACTS_OBJECTIVE_TEMPLATE = "stateObjectiveTemplate";
 	public const string RANDOM_FACT_OBJECTIVE_TEMPLATE = "randomFactObjectiveTemplate";
 }

@@ -22,19 +22,40 @@ public class GameController : MonoBehaviour
 	public Transform playerTransform;
 	
 	public string gotoTarget;
-	public string generalFactsTarget;
+	public string stateTarget;
 	public string randomFactTarget;
 	public string randomFactAttribute;
+	
+	private string[] Shuffle( string[] orig )
+	{
+		string[] ret = new string[orig.Length];
+		Array.Copy( orig, ret, orig.Length );
+		
+		for( int i = 0; i < ret.Length; i++ )
+		{
+			string temp = ret[i];
+			int r = UnityEngine.Random.Range( i, ret.Length );
+			
+			ret[i] = ret[r];
+			ret[r] = temp;
+		}
+		
+		return ret;
+	}
 	
 	void Awake()
 	{
 		instance = this;
 		
-		// TODO: Generate random targets
-		gotoTarget = "mars";
-		generalFactsTarget = "earth";
-		randomFactTarget = "jupiter";
-		randomFactAttribute = "temperature";
+		// Shuffle planets list
+		string[] shuffledPlanets = Shuffle( Constants.PLANET_KEYS );
+		gotoTarget = shuffledPlanets[0];
+		
+		stateTarget = shuffledPlanets[1];
+		
+		int r = UnityEngine.Random.Range( 0, Constants.ATTRIBUTE_KEYS.Length );
+		randomFactTarget = shuffledPlanets[2];
+		randomFactAttribute = Constants.ATTRIBUTE_KEYS[r];
 	}
 	
 	void Start()
@@ -179,9 +200,9 @@ public class GameController : MonoBehaviour
 				
 				StartCoroutine( speechSynthesisHandler.Synthesize( response.answer ) );
 				
-				if( ( string.Compare( response.queryType, "state" ) == 0 ) && ( string.Compare( response.targetPlanet, generalFactsTarget ) == 0 ) )
+				if( ( string.Compare( response.queryType, "state" ) == 0 ) && ( string.Compare( response.targetPlanet, stateTarget ) == 0 ) )
 				{
-					GameState.SetFlag( "generalFactsObjective" );
+					GameState.SetFlag( "stateObjective" );
 				}
 				else if( ( string.Compare( response.queryType, randomFactAttribute ) == 0 ) && ( string.Compare( response.targetPlanet, randomFactTarget ) == 0 ) )
 				{
