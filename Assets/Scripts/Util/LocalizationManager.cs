@@ -5,33 +5,29 @@ using UnityEngine;
 
 using SimpleJSON;
 
-public class LocalizationManager : MonoBehaviour
+public class LocalizationManager
 {
-	public string locale = "en-US";
+	private static string currentLocale = "ja-JP";
 	
-	private Dictionary<string, JSONNode> messagesCache;
-	private JSONNode messagesList;
+	private static Dictionary<string, JSONNode> messagesCache;
+	private static JSONNode messagesList;
 	
-	private static LocalizationManager instance = null;
-	public static LocalizationManager Instance
+	static LocalizationManager()
+	{
+		messagesCache = new Dictionary<string, JSONNode>();
+		
+		LoadLocale( currentLocale );
+	}
+	
+	public static string Locale
 	{
 		get
 		{
-			if( instance == null )
-			{
-				instance = GameObject.FindObjectOfType<LocalizationManager>();
-				if( instance == null )
-				{
-					GameObject go = new GameObject( "LocalizationManager" );
-					instance = go.AddComponent<LocalizationManager>();
-				}
-			}
-			
-			return instance;
+			return currentLocale;
 		}
 	}
 	
-	public void LoadLocale( string locale )
+	public static void LoadLocale( string locale )
 	{
 		if( messagesCache.ContainsKey( locale ) )
 		{
@@ -48,19 +44,21 @@ public class LocalizationManager : MonoBehaviour
 			{
 				messagesList = JSON.Parse( textAsset.text );
 				messagesCache.Add( locale, messagesList );
+				
+				currentLocale = locale;
 			}
 		}
 	}
 	
-	public string GetString( string key )
+	// Returns the associated message if the key exists in the localization file.
+	// Otherwise, returns the key itself.
+	public static string GetString( string key )
 	{
-		return messagesList[key].Value;
-	}
-	
-	void Awake()
-	{
-		messagesCache = new Dictionary<string, JSONNode>();
+		if( messagesList[key] != null )
+		{
+			return messagesList[key];
+		}
 		
-		LoadLocale( locale );
+		return key;
 	}
 }

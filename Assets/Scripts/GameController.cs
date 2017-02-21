@@ -70,7 +70,7 @@ public class GameController : MonoBehaviour
 		
 		if( UIManager.Instance.progressWindow != null && UIManager.Instance.progressWindow.gameObject.activeInHierarchy )
 		{
-			UIManager.Instance.progressWindow.Text = LocalizationManager.Instance.GetString( Messages.STATUS_RECORDING );
+			UIManager.Instance.progressWindow.Text = LocalizationManager.GetString( Messages.STATUS_RECORDING );
 			UIManager.Instance.progressWindow.Show();
 		}
 		
@@ -130,7 +130,7 @@ public class GameController : MonoBehaviour
 			// Show a dialog box indicating that the system is currently querying.
 			if( UIManager.Instance.progressWindow != null && UIManager.Instance.progressWindow.gameObject.activeInHierarchy )
 			{
-				UIManager.Instance.progressWindow.Text = LocalizationManager.Instance.GetString( Messages.STATUS_PROCESSING );
+				UIManager.Instance.progressWindow.Text = LocalizationManager.GetString( Messages.STATUS_PROCESSING );
 				//UIManager.Instance.progressWindow.Show();
 			}
 			

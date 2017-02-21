@@ -18,12 +18,10 @@ public class ObjectivesWindowBehaviour : PopupWindowBehaviour
 	}
 	
 	protected override void OnStart()
-	{
-		Debug.Log( LocalizationManager.Instance.GetString( "gotoObjectiveTemplate" ) );
-		
-		gotoObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.GOTO_OBJECTIVE_TEMPLATE ), GameController.Instance.gotoTarget );
-		generalFactsObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.GENERAL_FACTS_OBJECTIVE_TEMPLATE ), GameController.Instance.generalFactsTarget );
-		randomFactObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.Instance.GetString( Messages.RANDOM_FACT_OBJECTIVE_TEMPLATE ), GameController.Instance.randomFactAttribute, GameController.Instance.randomFactTarget );
+	{	
+		gotoObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.GetString( Messages.GOTO_OBJECTIVE_TEMPLATE ), GameController.Instance.gotoTarget );
+		generalFactsObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.GetString( Messages.GENERAL_FACTS_OBJECTIVE_TEMPLATE ), GameController.Instance.generalFactsTarget );
+		randomFactObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.GetString( Messages.RANDOM_FACT_OBJECTIVE_TEMPLATE ), GameController.Instance.randomFactAttribute, GameController.Instance.randomFactTarget );
 		
 		Show();
 	}
