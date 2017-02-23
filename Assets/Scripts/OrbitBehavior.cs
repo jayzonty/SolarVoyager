@@ -66,21 +66,24 @@ public class OrbitBehavior : MonoBehaviour
         float radius = ( aphelion + perihelion ) / 2.0f;
 
         LineRenderer lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.numPositions = NUM_POINTS + 1;
-		lineRenderer.startWidth = lineRenderer.endWidth = 1.25f;
-        //lineRenderer.material = orbitLineMaterial;
-        lineRenderer.useWorldSpace = false;
+		if( lineRenderer != null )
+		{
+			lineRenderer.numPositions = NUM_POINTS + 1;
+			lineRenderer.startWidth = lineRenderer.endWidth = 1.25f;
+			//lineRenderer.material = orbitLineMaterial;
+			lineRenderer.useWorldSpace = false;
 
-        float thetaStep = 2 * Mathf.PI / NUM_POINTS;
-        for( int i = 0; i <= NUM_POINTS; i++ )
-        {
-            Vector3 pos = new Vector3();
-            pos.x = radius * Mathf.Cos( thetaStep * i );
-            pos.y = 0.0f;
-            pos.z = radius * Mathf.Sin( thetaStep * i );
-			
-            lineRenderer.SetPosition( i, pos );
-        }
+			float thetaStep = 2 * Mathf.PI / NUM_POINTS;
+			for( int i = 0; i <= NUM_POINTS; i++ )
+			{
+				Vector3 pos = new Vector3();
+				pos.x = radius * Mathf.Cos( thetaStep * i );
+				pos.y = 0.0f;
+				pos.z = radius * Mathf.Sin( thetaStep * i );
+				
+				lineRenderer.SetPosition( i, pos );
+			}
+		}
     }
 
     void CircularOrbitUpdate()
