@@ -103,14 +103,6 @@ public class ViveInputHandler : MonoBehaviour
 	
 	void OnMenuButtonClicked( object sender, ClickedEventArgs e )
 	{
-		if( UIManager.Instance.vrContextMenu.IsVisible )
-		{
-			UIManager.Instance.vrContextMenu.Close();
-		}
-		else
-		{
-			UIManager.Instance.vrContextMenu.Show();
-		}
 	}
 	
 	bool IsLeftController( uint index )

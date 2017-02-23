@@ -221,11 +221,6 @@ public class GameController : MonoBehaviour
 		if( clip != null )
 		{
 			GameState.SetQueryState( GameState.QueryState.Idle );
-			
-			string tempFile = Application.temporaryCachePath + "/" + "testing.wav";
-			Debug.Log( "Saving synthesized speech to " + tempFile );
-			AudioUtil.SaveAudioClipToFile( clip, tempFile );
-			
 			virtualAssistantBehaviour.Speak( transcription, clip );
 		}
 	}
