@@ -14,6 +14,13 @@ public class ViveInputHandler : MonoBehaviour
 	// TODO: Remove lol
 	private Vector3 moveDirection;
 	private bool isMoving = false;
+	
+	private LineRenderer leftControllerLineRenderer;
+	
+	void Awake()
+	{
+		leftControllerLineRenderer = leftController.GetComponent<LineRenderer>();
+	}
 
 	void Start()
 	{
@@ -40,17 +47,39 @@ public class ViveInputHandler : MonoBehaviour
 	
 	void Update()
 	{
-		if( isMoving )
+		if( leftControllerLineRenderer != null )
 		{
-			moveDirection.x = leftController.controllerState.rAxis0.x;
-			moveDirection.z = leftController.controllerState.rAxis0.y;
-			moveDirection.y = 0.0f;
-			
-			PlayerController.instance.Move( moveDirection );
+			leftControllerLineRenderer.enabled = isMoving;
+			leftControllerLineRenderer.SetPosition( 0, leftController.transform.position );
+			leftControllerLineRenderer.SetPosition( 1, leftController.transform.position + leftController.transform.forward * 20.0f );
+		}
+		
+		if( isMoving )
+		{	
+			PlayerController.instance.Move( leftController.transform.forward );
 		}
 	}
 	
 	void OnTriggerClicked( object sender, ClickedEventArgs e )
+	{
+		if( IsLeftController( e.controllerIndex ) )
+		{
+			isMoving = true;
+			
+			GameState.navigationMode = GameState.NavigationMode.Free;
+		}
+		
+	}
+	
+	void OnTriggerUnclicked( object sender, ClickedEventArgs e )
+	{
+		if( IsLeftController( e.controllerIndex ) )
+		{
+			isMoving = false;
+		}
+	}
+	
+	void OnTouchPadClicked( object sender, ClickedEventArgs e )
 	{
 		if( IsLeftController( e.controllerIndex ) )
 		{
@@ -61,7 +90,7 @@ public class ViveInputHandler : MonoBehaviour
 		}
 	}
 	
-	void OnTriggerUnclicked( object sender, ClickedEventArgs e )
+	void OnTouchPadUnclicked( object sender, ClickedEventArgs e )
 	{
 		if( IsLeftController( e.controllerIndex ) )
 		{
@@ -69,24 +98,6 @@ public class ViveInputHandler : MonoBehaviour
 			{
 				GameController.Instance.FinalizeQuery();
 			}
-		}
-	}
-	
-	void OnTouchPadClicked( object sender, ClickedEventArgs e )
-	{
-		if( IsLeftController( e.controllerIndex ) )
-		{
-			isMoving = true;
-			
-			GameState.navigationMode = GameState.NavigationMode.Free;
-		}
-	}
-	
-	void OnTouchPadUnclicked( object sender, ClickedEventArgs e )
-	{
-		if( IsLeftController( e.controllerIndex ) )
-		{
-			isMoving = false;
 		}
 	}
 	

@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     {	
 		if( movementBehaviour != null )
 		{
-			movementBehaviour.Move( playerCamera.transform.localToWorldMatrix * direction );
+			movementBehaviour.Move( direction );
 		}
     }
 
