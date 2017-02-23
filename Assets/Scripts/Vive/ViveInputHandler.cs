@@ -28,124 +28,66 @@ public class ViveInputHandler : MonoBehaviour
 		// Register menu clicked event
 		leftController.MenuButtonClicked += OnMenuButtonClicked;
 		rightController.MenuButtonClicked += OnMenuButtonClicked;
+		
+		// Register trigger clicked event
+		leftController.TriggerClicked += OnTriggerClicked;
+		rightController.TriggerClicked += OnTriggerClicked;
+		
+		// Register trigger unclicked event
+		leftController.TriggerUnclicked += OnTriggerUnclicked;
+		rightController.TriggerUnclicked += OnTriggerUnclicked;
 	}
 	
 	void Update()
 	{
 		if( isMoving )
 		{
+			moveDirection.x = leftController.controllerState.rAxis0.x;
+			moveDirection.z = leftController.controllerState.rAxis0.y;
+			moveDirection.y = 0.0f;
+			
 			PlayerController.instance.Move( moveDirection );
+		}
+	}
+	
+	void OnTriggerClicked( object sender, ClickedEventArgs e )
+	{
+		if( IsLeftController( e.controllerIndex ) )
+		{
+			if( GameState.CurrentQueryState == GameState.QueryState.Idle )
+			{
+				GameController.Instance.StartQuery();
+			}
+		}
+	}
+	
+	void OnTriggerUnclicked( object sender, ClickedEventArgs e )
+	{
+		if( IsLeftController( e.controllerIndex ) )
+		{
+			if( GameState.CurrentQueryState == GameState.QueryState.Recording )
+			{
+				GameController.Instance.FinalizeQuery();
+			}
 		}
 	}
 	
 	void OnTouchPadClicked( object sender, ClickedEventArgs e )
 	{
-		if( ( -0.3f <= e.padX && e.padX <= 0.3f ) && ( -0.3f <= e.padY && e.padY <= 0.3f ) ) // Center button
+		if( IsLeftController( e.controllerIndex ) )
 		{
-			if( GameState.CurrentQueryState == GameState.QueryState.Idle )
-			{
-				recordingController = e.controllerIndex;
-				
-				GameController.Instance.StartQuery();
-			}
-		}
-		else if( ( e.padX < -0.3f ) && ( -0.3f <= e.padY && e.padY <= 0.3f ) ) // Left button
-		{
-			Debug.Log( "Left button" );
-			if( UIManager.Instance.vrContextMenu.IsVisible )
-			{
-				UIManager.Instance.vrContextMenu.Close();
-				
-				GameObject[] planets = GameObject.FindGameObjectsWithTag( "Planet" );
-				foreach( GameObject go in planets )
-				{
-					if( go.name.Equals( "Earth" ) )
-					{
-						PlayerController.instance.WarpToPlanet( go.GetComponentInChildren<BodyBehavior>().gameObject.transform );
-						break;
-					}
-				}
-			}
-			else if( GameState.CurrentMode == GameState.Mode.Navigating )
-			{
-				if( GameState.navigationMode == GameState.NavigationMode.Follow )
-				{
-					GameState.navigationMode = GameState.NavigationMode.Free;
-				}
-				
-				moveDirection = -Vector3.right;
-				isMoving = true;
-			}
-		}
-		else if( ( e.padX > 0.3f ) && ( -0.3f <= e.padY && e.padY <= 0.3f ) ) // Right button
-		{
-			Debug.Log( "Right button" );
+			isMoving = true;
 			
-			if( GameState.CurrentMode == GameState.Mode.Navigating )
-			{
-				if( GameState.navigationMode == GameState.NavigationMode.Follow )
-				{
-					GameState.navigationMode = GameState.NavigationMode.Free;
-				}
-				
-				moveDirection = Vector3.right;
-				isMoving = true;
-			}
-		}
-		else if( ( -0.3f <= e.padX && e.padX <= 0.3f ) && ( e.padY < -0.3f ) ) // Down button
-		{
-			Debug.Log( "Down button" );
-			
-			if( GameState.CurrentMode == GameState.Mode.Navigating )
-			{
-				if( GameState.navigationMode == GameState.NavigationMode.Follow )
-				{
-					GameState.navigationMode = GameState.NavigationMode.Free;
-				}
-				
-				moveDirection = -Vector3.forward;
-				isMoving = true;
-			}
-		}
-		else if( ( -0.3f <= e.padX && e.padX <= 0.3f ) && ( e.padY > 0.3f ) ) // Up button
-		{
-			Debug.Log( "Up button" );
-			
-			if( UIManager.Instance.vrContextMenu.IsVisible )
-			{
-				UIManager.Instance.vrContextMenu.Close();
-				
-				GameObject[] planets = GameObject.FindGameObjectsWithTag( "Planet" );
-				foreach( GameObject go in planets )
-				{
-					if( go.name.Equals( "Earth" ) )
-					{
-						PlayerController.instance.Follow( go.GetComponentInChildren<BodyBehavior>().gameObject.transform );
-						break;
-					}
-				}
-			}
-			else if( GameState.CurrentMode == GameState.Mode.Navigating )
-			{
-				if( GameState.navigationMode == GameState.NavigationMode.Follow )
-				{
-					GameState.navigationMode = GameState.NavigationMode.Free;
-				}
-				
-				moveDirection = Vector3.forward;
-				isMoving = true;
-			}
+			GameState.navigationMode = GameState.NavigationMode.Free;
 		}
 	}
 	
 	void OnTouchPadUnclicked( object sender, ClickedEventArgs e )
 	{
-		if( ( GameState.CurrentQueryState == GameState.QueryState.Recording ) && ( recordingController == e.controllerIndex ) )
+		if( IsLeftController( e.controllerIndex ) )
 		{
-			GameController.Instance.FinalizeQuery();
+			isMoving = false;
 		}
-		
-		isMoving = false;
 	}
 	
 	void OnMenuButtonClicked( object sender, ClickedEventArgs e )

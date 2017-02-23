@@ -25,7 +25,9 @@ public class ObjectivesWindowBehaviour : PopupWindowBehaviour
 		
 		gotoObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.GetString( Messages.GOTO_OBJECTIVE_TEMPLATE ), LocalizationManager.GetString( GameController.Instance.gotoTarget ) );
 		stateObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.GetString( Messages.GENERAL_FACTS_OBJECTIVE_TEMPLATE ), LocalizationManager.GetString( GameController.Instance.stateTarget ) );
-		randomFactObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.GetString( Messages.RANDOM_FACT_OBJECTIVE_TEMPLATE ), LocalizationManager.GetString( GameController.Instance.randomFactAttribute ), LocalizationManager.GetString( GameController.Instance.randomFactTarget ) );
+		
+		string randomFactSampleQuestion = string.Format( LocalizationManager.GetString( GameController.Instance.randomFactAttribute + "QuestionTemplate" ), LocalizationManager.GetString( GameController.Instance.randomFactTarget ) );
+		randomFactObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.GetString( Messages.RANDOM_FACT_OBJECTIVE_TEMPLATE ), LocalizationManager.GetString( GameController.Instance.randomFactAttribute ), LocalizationManager.GetString( GameController.Instance.randomFactTarget ), randomFactSampleQuestion );
 		
 		Show();
 	}

@@ -18,7 +18,13 @@
 	"statusRecording": "録音中",
 	"statusProcessing": "処理中",
 	
-	"gotoObjectiveTemplate": "{0}に行きましょう！",
-	"stateObjectiveTemplate": "{0}について聞きましょう！",
-	"randomFactObjectiveTemplate": "{1}の{0}について聞きましょう！"
+	"gotoObjectiveTemplate": "{0}に行きましょう！\n「{0}に行きたいです」",
+	"stateObjectiveTemplate": "{0}について聞きましょう！\n「{0}について教えてください」",
+	"randomFactObjectiveTemplate": "{1}の{0}について聞きましょう！\n「{2}」",
+	
+	"temperatureQuestionTemplate": "{0}は暖かいですか",
+	"sizeQuestionTemplate": "{0}の大きさはどのくらいですか",
+	"rotationQuestionTemplate": "{0}で一日の長さはどのくらいですか",
+	"revolutionQuestionTemplate": "{0}で一年の長さはどのくらいですか"
+	
 }
