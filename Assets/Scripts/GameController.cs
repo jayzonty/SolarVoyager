@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -105,7 +105,7 @@ public class GameController : MonoBehaviour
 		AudioClip clip = SpeechRecording.GetMostRecentClip();
 		
 		// Uncomment to use sample query for testing purposes.
-		//clip = Resources.Load( "Sounds/how-big-is-planet-mars" ) as AudioClip;
+		clip = Resources.Load( "Sounds/tell-me-about-earth-jp-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-big-is-planet-venus-tts" ) as AudioClip;
@@ -189,8 +189,8 @@ public class GameController : MonoBehaviour
 				// Proceed with synthesizing the response to speech.
 				SpeechSynthesisOptions options;
 				
-				options.locale = "en-US";
-				//options.locale = "ja-JP";
+				//options.locale = "en-US";
+				options.locale = "ja-JP";
 				options.voiceType = SpeechSynthesisOptions.VoiceType.Female;
 				
 				SpeechSynthesisHandler speechSynthesisHandler = new SpeechSynthesisHandler( options );
@@ -209,20 +209,11 @@ public class GameController : MonoBehaviour
 					GameState.SetFlag( "randomFactObjective" );
 				}
 			}
-			
-			// Show a dialog box showing the original question.
-			if( UIManager.Instance.dialogueWindow != null && UIManager.Instance.dialogueWindow.gameObject.activeInHierarchy )
-			{
-				UIManager.Instance.progressWindow.Close();
-				
-				UIManager.Instance.dialogueWindow.ClearAudioSource();
-				UIManager.Instance.dialogueWindow.ShowText( "Question: " + response.transcription );
-				
-				UIManager.Instance.dialogueWindow.Show();
-			}
 		}
 		
 		GameState.SetQueryState( GameState.QueryState.Idle );
+		
+		UIManager.Instance.progressWindow.Close();
 	}
 	
 	private void HandleSpeechSynthesisFinished( string transcription, AudioClip clip )
@@ -230,6 +221,10 @@ public class GameController : MonoBehaviour
 		if( clip != null )
 		{
 			GameState.SetQueryState( GameState.QueryState.Idle );
+			
+			string tempFile = Application.temporaryCachePath + "/" + "testing.wav";
+			Debug.Log( "Saving synthesized speech to " + tempFile );
+			AudioUtil.SaveAudioClipToFile( clip, tempFile );
 			
 			virtualAssistantBehaviour.Speak( transcription, clip );
 		}

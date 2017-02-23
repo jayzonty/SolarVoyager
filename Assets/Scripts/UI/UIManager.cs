@@ -38,10 +38,10 @@ public class UIManager : MonoBehaviour
 	{
 		instance = this;
 		
-		dialogueWindow = GameObject.FindObjectOfType<DialogueWindowBehaviour>();
-		vrContextMenu = GameObject.FindObjectOfType<VRContextMenu>();
-		progressWindow = GameObject.FindObjectOfType<ProgressWindowBehaviour>();
-		objectivesWindow = GameObject.FindObjectOfType<ObjectivesWindowBehaviour>();
+		//dialogueWindow = GameObject.FindObjectOfType<DialogueWindowBehaviour>();
+		//vrContextMenu = GameObject.FindObjectOfType<VRContextMenu>();
+		//progressWindow = GameObject.FindObjectOfType<ProgressWindowBehaviour>();
+		//objectivesWindow = GameObject.FindObjectOfType<ObjectivesWindowBehaviour>();
 	}
 	
 	void Start()

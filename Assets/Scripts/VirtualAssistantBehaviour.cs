@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent( typeof( AudioSource ) )]
 public class VirtualAssistantBehaviour : MonoBehaviour
 {
 	public Transform player;
-	
-	private AudioSource audioSource;
 	
 	private MeshRenderer meshRenderer;
 	
 	void Awake()
 	{
-		audioSource = GetComponent<AudioSource>();
-		
 		meshRenderer = GetComponentInChildren<MeshRenderer>();
 	}
 	
@@ -58,14 +53,12 @@ public class VirtualAssistantBehaviour : MonoBehaviour
 	
 	public void Speak( string text, AudioClip clip )
 	{
+		AudioSource audioSource = PlayerController.instance.GetComponentInChildren<AudioSource>();
 		DialogueWindowBehaviour dialogueWindow = UIManager.Instance.dialogueWindow;
 		if( dialogueWindow != null && dialogueWindow.gameObject.activeInHierarchy )
 		{
-			// TODO: Original question should be stored somewhere else.
-			string originalQuestion = dialogueWindow.GetText();
-			
 			Dialogue dialogue = new Dialogue();
-			dialogue.AddDialogueLine( originalQuestion + "\n\nAnswer: " + text, clip );
+			dialogue.AddDialogueLine( text, clip );
 			
 			GameState.SetCurrentMode( GameState.Mode.Dialogue );
 			

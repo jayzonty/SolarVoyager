@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class ObjectivesWindowBehaviour : PopupWindowBehaviour
 {
+	public Text objectivesLabel;
+	
 	public Toggle gotoObjectiveToggle;
 	public Toggle stateObjectiveToggle;
 	public Toggle randomFactObjectiveToggle;
@@ -18,7 +20,9 @@ public class ObjectivesWindowBehaviour : PopupWindowBehaviour
 	}
 	
 	protected override void OnStart()
-	{	
+	{
+		objectivesLabel.text = LocalizationManager.GetString( Messages.OBJECTIVES_LABEL );
+		
 		gotoObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.GetString( Messages.GOTO_OBJECTIVE_TEMPLATE ), LocalizationManager.GetString( GameController.Instance.gotoTarget ) );
 		stateObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.GetString( Messages.GENERAL_FACTS_OBJECTIVE_TEMPLATE ), LocalizationManager.GetString( GameController.Instance.stateTarget ) );
 		randomFactObjectiveToggle.GetComponentInChildren<Text>().text = string.Format( LocalizationManager.GetString( Messages.RANDOM_FACT_OBJECTIVE_TEMPLATE ), LocalizationManager.GetString( GameController.Instance.randomFactAttribute ), LocalizationManager.GetString( GameController.Instance.randomFactTarget ) );

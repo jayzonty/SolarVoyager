@@ -35,7 +35,7 @@ public class SpeechSynthesisHandler
 	
 	public string bingSpeechApiKey = "e54ef2dca66a41f88c92d8cd4b592c13";
 	
-	public static readonly string SSML_TEMPLATE = "<speak version='1.0' xml:lang='en-us'><voice xml:lang='{0}' xml:gender='{1}' name='{2}'>{3}</voice></speak>";
+	public static readonly string SSML_TEMPLATE = "<speak version=\"1.0\" xml:lang=\"en-US\"><voice xml:lang=\"{0}\" xml:gender=\"{1}\" name=\"{2}\">{3}</voice></speak>";
 	
 	private SpeechSynthesisOptions synthesisOptions;
 	
@@ -60,7 +60,7 @@ public class SpeechSynthesisHandler
 		
 		string content = string.Format( SSML_TEMPLATE, synthesisOptions.locale, synthesisOptions.voiceType.ToString(), voiceName, text );
 		
-		UploadHandler uploadHandler = new UploadHandlerRaw( Encoding.ASCII.GetBytes( content ) );
+		UploadHandler uploadHandler = new UploadHandlerRaw( Encoding.UTF8.GetBytes( content ) );
 		uploadHandler.contentType = "application/ssml+xml";
 		request.uploadHandler = uploadHandler;
 		

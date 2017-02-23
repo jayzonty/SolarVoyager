@@ -2,6 +2,7 @@
 [System.Serializable]
 public class Messages
 {
+	public const string OBJECTIVES_LABEL = "objectives";
 	// Status messages
 	public const string STATUS_RECORDING = "statusRecording";
 	public const string STATUS_PROCESSING = "statusProcessing";
