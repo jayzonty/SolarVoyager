@@ -105,7 +105,7 @@ public class GameController : MonoBehaviour
 		AudioClip clip = SpeechRecording.GetMostRecentClip();
 		
 		// Uncomment to use sample query for testing purposes.
-		clip = Resources.Load( "Sounds/tell-me-about-earth-jp-tts" ) as AudioClip;
+		//clip = Resources.Load( "Sounds/tell-me-about-earth-jp-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-planet-earth-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-big-is-planet-venus-tts" ) as AudioClip;
@@ -181,7 +181,7 @@ public class GameController : MonoBehaviour
 						GameState.SetFlag( "gotoObjective" );
 					}
 					
-					PlayerController.instance.Follow( go.GetComponentInChildren<BodyBehavior>().transform );
+					PlayerController.instance.WarpToPlanet( go.GetComponentInChildren<BodyBehavior>().transform );
 				}
 			}
 			else
