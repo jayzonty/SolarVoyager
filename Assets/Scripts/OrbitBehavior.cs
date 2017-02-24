@@ -69,7 +69,7 @@ public class OrbitBehavior : MonoBehaviour
 		if( lineRenderer != null )
 		{
 			lineRenderer.numPositions = NUM_POINTS + 1;
-			lineRenderer.startWidth = lineRenderer.endWidth = 1.25f;
+			//lineRenderer.startWidth = lineRenderer.endWidth = 1.25f;
 			//lineRenderer.material = orbitLineMaterial;
 			lineRenderer.useWorldSpace = false;
 
