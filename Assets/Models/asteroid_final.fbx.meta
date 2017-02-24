@@ -1,0 +1,134 @@
+fileFormatVersion: 2
+guid: b131c5761090f6442b964de116356f97
+timeCreated: 1487959947
+licenseType: Pro
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Icosphere
+    100004: Icosphere.001
+    100006: Icosphere.002
+    100008: Icosphere.003
+    100010: Icosphere.004
+    100012: Sun
+    100014: Sun.001
+    100016: Sun.002
+    400000: //RootNode
+    400002: Icosphere
+    400004: Icosphere.001
+    400006: Icosphere.002
+    400008: Icosphere.003
+    400010: Icosphere.004
+    400012: Sun
+    400014: Sun.001
+    400016: Sun.002
+    2300000: Icosphere
+    2300002: Icosphere.001
+    2300004: Icosphere.002
+    2300006: Icosphere.003
+    2300008: Icosphere.004
+    3300000: Icosphere
+    3300002: Icosphere.001
+    3300004: Icosphere.002
+    3300006: Icosphere.003
+    3300008: Icosphere.004
+    4300000: Icosphere.003
+    4300002: Icosphere.004
+    4300004: Icosphere.002
+    4300006: Icosphere.001
+    4300008: Icosphere
+    7400000: Icosphere.003|Icosphere.001Action
+    7400002: Icosphere.003|Icosphere.002Action
+    7400004: Icosphere.003|Icosphere.003Action
+    7400006: Icosphere.003|Icosphere.004Action
+    7400008: Icosphere.003|IcosphereAction
+    7400010: Icosphere.004|Icosphere.001Action
+    7400012: Icosphere.004|Icosphere.002Action
+    7400014: Icosphere.004|Icosphere.003Action
+    7400016: Icosphere.004|Icosphere.004Action
+    7400018: Icosphere.004|IcosphereAction
+    7400020: Icosphere.002|Icosphere.001Action
+    7400022: Icosphere.002|Icosphere.002Action
+    7400024: Icosphere.002|Icosphere.003Action
+    7400026: Icosphere.002|Icosphere.004Action
+    7400028: Icosphere.002|IcosphereAction
+    7400030: Icosphere.001|Icosphere.001Action
+    7400032: Icosphere.001|Icosphere.002Action
+    7400034: Icosphere.001|Icosphere.003Action
+    7400036: Icosphere.001|Icosphere.004Action
+    7400038: Icosphere.001|IcosphereAction
+    7400040: Icosphere|Icosphere.001Action
+    7400042: Icosphere|Icosphere.002Action
+    7400044: Icosphere|Icosphere.003Action
+    7400046: Icosphere|Icosphere.004Action
+    7400048: Icosphere|IcosphereAction
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
