@@ -84,6 +84,17 @@ public class GameController : MonoBehaviour
 	{
 		GameState.SetQueryState( GameState.QueryState.Recording );
 		
+		AudioClip clip = Resources.Load( "Sounds/start_listening" ) as AudioClip;
+		if( clip != null )
+		{
+			AudioSource audioSource = PlayerController.instance.GetComponentInChildren<AudioSource>();
+			if( audioSource != null )
+			{
+				audioSource.clip = clip;
+				audioSource.Play();
+			}
+		}
+		
 		if( UIManager.Instance.dialogueWindow.IsVisible )
 		{
 			UIManager.Instance.dialogueWindow.Close();
