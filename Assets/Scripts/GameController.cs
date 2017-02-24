@@ -110,6 +110,7 @@ public class GameController : MonoBehaviour
 		//clip = Resources.Load( "Sounds/how-hot-is-this-planet-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/how-big-is-planet-venus-tts" ) as AudioClip;
 		//clip = Resources.Load( "Sounds/go-to-mars-tts" ) as AudioClip;
+		//clip = Resources.Load( "Sounds/go-to-venus-tts-jp" ) as AudioClip;
 		
 		// For now, consider "this" planet as the nearest planet from the player (euclid distance)
 		BodyBehavior[] planets = GameObject.FindObjectsOfType<BodyBehavior>();
@@ -169,8 +170,13 @@ public class GameController : MonoBehaviour
 	private void HandleSpeechQueryFinished( string rawTextResponse, SpeechQueryResponse response )
 	{
 		// If there is a valid response...
+		string answer = LocalizationManager.GetString( "questionInvalid" );
+		virtualAssistantBehaviour.Animation = VirtualAssistantBehaviour.AnimationType.Wakarimasen;
+		
 		if( response != null )
 		{
+			answer = response.answer;
+			
 			if( string.Compare( response.queryType, "move" ) == 0 )
 			{
 				GameObject go = GetPlanet( response.targetPlanet );
@@ -182,24 +188,14 @@ public class GameController : MonoBehaviour
 					}
 					
 					PlayerController.instance.WarpToPlanet( go.GetComponentInChildren<BodyBehavior>().transform );
+					
+					answer = string.Format( LocalizationManager.GetString( "arrivedPlanet" ), LocalizationManager.GetString( response.targetPlanet ) );
+					
+					virtualAssistantBehaviour.Animation = VirtualAssistantBehaviour.AnimationType.Thanks;
 				}
 			}
 			else
 			{
-				// Proceed with synthesizing the response to speech.
-				SpeechSynthesisOptions options;
-				
-				//options.locale = "en-US";
-				options.locale = "ja-JP";
-				options.voiceType = SpeechSynthesisOptions.VoiceType.Female;
-				
-				SpeechSynthesisHandler speechSynthesisHandler = new SpeechSynthesisHandler( options );
-				speechSynthesisHandler.SpeechSynthesisFinished += HandleSpeechSynthesisFinished;
-				
-				GameState.SetQueryState( GameState.QueryState.Synthesizing );
-				
-				StartCoroutine( speechSynthesisHandler.Synthesize( response.answer ) );
-				
 				if( ( string.Compare( response.queryType, "state" ) == 0 ) && ( string.Compare( response.targetPlanet, stateTarget ) == 0 ) )
 				{
 					GameState.SetFlag( "stateObjective" );
@@ -208,20 +204,34 @@ public class GameController : MonoBehaviour
 				{
 					GameState.SetFlag( "randomFactObjective" );
 				}
+				
+				virtualAssistantBehaviour.Animation = VirtualAssistantBehaviour.AnimationType.Yes;
 			}
 		}
 		
-		GameState.SetQueryState( GameState.QueryState.Idle );
+		// Proceed with synthesizing the response to speech.
+		SpeechSynthesisOptions options;
 		
-		UIManager.Instance.progressWindow.Close();
+		options.locale = "ja-JP";
+		options.voiceType = SpeechSynthesisOptions.VoiceType.Male;
+					
+		SpeechSynthesisHandler speechSynthesisHandler = new SpeechSynthesisHandler( options );
+		speechSynthesisHandler.SpeechSynthesisFinished += HandleSpeechSynthesisFinished;
+		
+		GameState.SetQueryState( GameState.QueryState.Synthesizing );
+		
+		StartCoroutine( speechSynthesisHandler.Synthesize( answer ) );
 	}
 	
 	private void HandleSpeechSynthesisFinished( string transcription, AudioClip clip )
 	{
+		UIManager.Instance.progressWindow.Close();
+		
 		if( clip != null )
 		{
-			GameState.SetQueryState( GameState.QueryState.Idle );
 			virtualAssistantBehaviour.Speak( transcription, clip );
 		}
+		
+		GameState.SetQueryState( GameState.QueryState.Idle );
 	}
 }

@@ -103,6 +103,13 @@ public class ViveInputHandler : MonoBehaviour
 	
 	void OnMenuButtonClicked( object sender, ClickedEventArgs e )
 	{
+		if( IsLeftController( e.controllerIndex ) )
+		{
+			if( UIManager.Instance.dialogueWindow.IsVisible )
+			{
+				UIManager.Instance.dialogueWindow.Close();
+			}
+		}
 	}
 	
 	bool IsLeftController( uint index )

@@ -69,21 +69,5 @@ public class KeyboardInputHandler : MonoBehaviour
 				UIManager.Instance.dialogueWindow.Close();
 			}
 		}
-		
-		if( Input.GetKeyDown( KeyCode.V ) )
-		{
-			VirtualAssistantBehaviour virtualAssistant = GameController.Instance.virtualAssistantBehaviour;
-			if( virtualAssistant != null )
-			{
-				if( virtualAssistant.IsVisible )
-				{
-					virtualAssistant.Hide();
-				}
-				else
-				{
-					virtualAssistant.Show();
-				}
-			}
-		}
 	}
 }

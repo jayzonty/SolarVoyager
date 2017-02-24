@@ -4,13 +4,29 @@ using UnityEngine;
 
 public class VirtualAssistantBehaviour : MonoBehaviour
 {
-	public Transform player;
+	private Animator animator;
 	
-	private MeshRenderer meshRenderer;
+	public enum AnimationType
+	{
+		Idle, Yes, No, Wakarimasen, Thanks
+	}
+	
+	private AnimationType animation = AnimationType.Idle;
+	public AnimationType Animation
+	{
+		get
+		{
+			return animation;
+		}
+		set
+		{
+			animation = value;
+		}
+	}
 	
 	void Awake()
 	{
-		meshRenderer = GetComponentInChildren<MeshRenderer>();
+		animator = GetComponentInChildren<Animator>();
 	}
 	
     void Start()
@@ -19,37 +35,7 @@ public class VirtualAssistantBehaviour : MonoBehaviour
 
     void Update()
     {
-		if( player != null )
-		{
-			// Attempt to follow player
-			Vector3 playerPos = player.position;
-			//transform.position = playerPos + Vector3.forward;
-		}
     }
-	
-	public void Show()
-	{
-		if( meshRenderer != null )
-		{
-			meshRenderer.enabled = true;
-		}
-	}
-	
-	public void Hide()
-	{
-		if( meshRenderer != null )
-		{
-			meshRenderer.enabled = false;
-		}
-	}
-	
-	public bool IsVisible
-	{
-		get
-		{
-			return meshRenderer.enabled;
-		}
-	}
 	
 	public void Speak( string text, AudioClip clip )
 	{
@@ -72,6 +58,11 @@ public class VirtualAssistantBehaviour : MonoBehaviour
 		{
 			audioSource.clip = clip;
 			audioSource.Play();
+		}
+		
+		if( animator != null )
+		{
+			animator.SetTrigger( animation.ToString() );
 		}
 	}
 }
