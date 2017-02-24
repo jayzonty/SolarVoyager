@@ -9,7 +9,6 @@ public class UIManager : MonoBehaviour
 	public Dropdown planetsDropdown;
 	
 	public DialogueWindowBehaviour dialogueWindow;
-	public VRContextMenu vrContextMenu;
 	public ProgressWindowBehaviour progressWindow;
 	public ObjectivesWindowBehaviour objectivesWindow;
 	
@@ -37,11 +36,6 @@ public class UIManager : MonoBehaviour
 	void Awake()
 	{
 		instance = this;
-		
-		//dialogueWindow = GameObject.FindObjectOfType<DialogueWindowBehaviour>();
-		//vrContextMenu = GameObject.FindObjectOfType<VRContextMenu>();
-		//progressWindow = GameObject.FindObjectOfType<ProgressWindowBehaviour>();
-		//objectivesWindow = GameObject.FindObjectOfType<ObjectivesWindowBehaviour>();
 	}
 	
 	void Start()
