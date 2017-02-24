@@ -180,6 +180,13 @@ public class GameController : MonoBehaviour
 	
 	private void HandleSpeechQueryFinished( string rawTextResponse, SpeechQueryResponse response )
 	{
+		if( string.IsNullOrEmpty( rawTextResponse ) )
+		{
+			rawTextResponse = "ERROR";
+		}
+		
+		Logger.Write( rawTextResponse );
+		
 		// If there is a valid response...
 		string answer = LocalizationManager.GetString( "questionInvalid" );
 		virtualAssistantBehaviour.Animation = VirtualAssistantBehaviour.AnimationType.Wakarimasen;
